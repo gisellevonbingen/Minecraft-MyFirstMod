@@ -27,8 +27,8 @@ public class RecipesGenerator extends RecipeProvider
 	{
 		String modid = MyFirstMod.MODID;
 		ItemStackToItemStackRecipeBuilder.smelting(ItemStackIngredient.from(ItemTags.COALS), new ItemStack(Registration.ROCK.get(), 64)).build(p_200404_1_);
-		ItemStackToItemStackRecipeBuilder.enriching(ItemStackIngredient.from(new ItemStack(Registration.ROCK.get())), new ItemStack(Items.COAL)).build(p_200404_1_, new ResourceLocation(modid, "rock_enriching"));
-		ItemStackToItemStackRecipeBuilder.crushing(ItemStackIngredient.from(new ItemStack(Registration.ROCK.get())), new ItemStack(Items.COAL)).build(p_200404_1_, new ResourceLocation(modid, "rock_crushing"));
+		ItemStackToItemStackRecipeBuilder.enriching(ItemStackIngredient.from(new ItemStack(Registration.ROCK.get())), new ItemStack(Items.STONE)).build(p_200404_1_, new ResourceLocation(modid, "rock_enriching"));
+		ItemStackToItemStackRecipeBuilder.crushing(ItemStackIngredient.from(new ItemStack(Registration.ROCK.get())), new ItemStack(Items.COBBLESTONE)).build(p_200404_1_, new ResourceLocation(modid, "rock_crushing"));
 	}
 
 }

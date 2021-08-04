@@ -81,12 +81,10 @@ repositories {
 		url "https://repo.refinedmods.com"
 	}
 	maven {
-		name "RS"
-		url "https://repo.refinedmods.com"
+		name "Local"
+		url uri("${projectDir}/libs")
 	}
-	flatDir {
-       dirs "${projectDir}/libs"
-	}
+	
 }
 	
 dependencies {
@@ -98,7 +96,7 @@ dependencies {
 	
 	// Mekanism
     compileOnly "mekanism:Mekanism:${mekanism_version}:api"
-    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")			// core
+    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")				// core
     runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:additions")	// Mekanism: Additions
     runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:generators")// Mekanism: Generators
     runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:tools")		// Mekanism: Tools
@@ -108,10 +106,10 @@ dependencies {
     runtimeOnly fg.deobf("com.refinedmods:refinedstorage:${rs_version}")
     
     // TCon
-    compileOnly fg.deobf(files("/Mantle-1.16.5-1.6.115.jar"))
-    runtimeOnly fg.deobf(files("/Mantle-1.16.5-1.6.115.jar"))
-    compileOnly fg.deobf(files("/TConstruct-1.16.5-3.1.1.252.jar"))
-    runtimeOnly fg.deobf(files("/TConstruct-1.16.5-3.1.1.252.jar"))
+    compileOnly fg.deobf("com.github.SlimeKnights:Mantle:1.6.115")
+    runtimeOnly fg.deobf("com.github.SlimeKnights:Mantle:1.6.115")
+    compileOnly fg.deobf("com.github.SlimeKnights:TinkersConstruct:3.1.1.252")
+    runtimeOnly fg.deobf("com.github.SlimeKnights:TinkersConstruct:3.1.1.252")
 }
 
 jar {
