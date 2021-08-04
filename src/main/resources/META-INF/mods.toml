@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+[[mods]]
+modId="myfirstmod"
+version="${file.jarVersion}"
+displayName="My First Mod"
+logoFile="examplemod.png"
+credits="gisellevonbingen"
+authors="gisellevonbingen"
+description='''
+Just Description
+'''
+[[dependencies.myfirstmod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.myfirstmod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.myfirstmod]]
+    modId="mekanism"
+    mandatory=true
+    versionRange="[10.0.20,)"
+    ordering="AFTER"
+    side="BOTH"

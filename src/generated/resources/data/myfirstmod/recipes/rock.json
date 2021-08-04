@@ -1,0 +1,12 @@
+{
+  "type": "mekanism:smelting",
+  "input": {
+    "ingredient": {
+      "tag": "minecraft:coals"
+    }
+  },
+  "output": {
+    "item": "myfirstmod:rock",
+    "count": 64
+  }
+}
