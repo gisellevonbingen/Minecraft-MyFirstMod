@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "myfirstmod:dust_cobalt"
   },
-  "result": "tconstruct:cobalt_ingot",
+  "result": "myfirstmod:cobalt_ingot",
   "experience": 0.3,
   "cookingtime": 100
 }

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "myfirstmod:dust_unknownium"
   },
-  "result": "minecraft:air",
+  "result": "myfirstmod:unknownium_ingot",
   "experience": 0.3,
   "cookingtime": 200
 }

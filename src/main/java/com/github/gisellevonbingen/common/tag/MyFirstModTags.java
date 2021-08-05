@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.github.gisellevonbingen.common.ore.OreState;
 import com.github.gisellevonbingen.common.ore.OreType;
-import com.github.gisellevonbingen.common.ore.ProcessState;
 
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
@@ -36,7 +35,7 @@ public class MyFirstModTags
 
 			for (OreState oreState : OreState.values())
 			{
-				if (oreState.getProcessState() == ProcessState.PROCESSING)
+				if (oreState != OreState.ORE)
 				{
 					INamedTag<Item> tag = tag(oreType, oreState);
 					map2.put(oreState, tag);

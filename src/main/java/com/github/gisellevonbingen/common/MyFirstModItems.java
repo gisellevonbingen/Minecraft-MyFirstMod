@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import com.github.gisellevonbingen.MyFirstMod;
 import com.github.gisellevonbingen.common.ore.OreState;
 import com.github.gisellevonbingen.common.ore.OreType;
-import com.github.gisellevonbingen.common.ore.ProcessState;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Properties;
@@ -70,7 +69,7 @@ public class MyFirstModItems
 
 		for (OreState oreState : OreState.values())
 		{
-			if (oreState.getProcessState() == ProcessState.PROCESSING)
+			if (oreState != OreState.ORE)
 			{
 				RegistryObject<Item> registryObject = registry.register(oreState.getItemName(oreType), () -> new Item(new Properties().tab(MyFirstModItemGroups.tabMyFirstMod)));
 				map2.put(oreState, registryObject);

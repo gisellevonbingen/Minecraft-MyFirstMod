@@ -14,26 +14,19 @@ import net.minecraftforge.registries.RegistryManager;
 
 public enum OreState
 {
-	ORE(Tags.Items.ORES, ProcessState.ORE),
+	ORE(Tags.Items.ORES),
 	DUST(Tags.Items.DUSTS),
 	DIRTY_DUST(MekanismTags.Items.DIRTY_DUSTS),
 	CLUMP(MekanismTags.Items.CLUMPS),
 	SHARD(MekanismTags.Items.SHARDS),
 	CRYSTAL(MekanismTags.Items.CRYSTALS),
-	INGOT(Tags.Items.INGOTS, ProcessState.INGOT);
+	INGOT(Tags.Items.INGOTS);
 
 	private ITag.INamedTag<Item> categoryTag;
-	private ProcessState processState;
 
 	OreState(ITag.INamedTag<Item> categoryTag)
 	{
-		this(categoryTag, ProcessState.PROCESSING);
-	}
-
-	OreState(ITag.INamedTag<Item> categoryTag, ProcessState processState)
-	{
 		this.categoryTag = categoryTag;
-		this.processState = processState;
 	}
 
 	public INamedTag<Item> getCategoryTag()
@@ -49,7 +42,7 @@ public enum OreState
 
 	public INamedTag<Item> getStateTag(OreType oreType)
 	{
-		if (this.processState == ProcessState.PROCESSING)
+		if (this != OreState.ORE)
 		{
 			return com.github.gisellevonbingen.common.tag.MyFirstModTags.getProcessingItemTag(oreType, this);
 		}
@@ -58,11 +51,6 @@ public enum OreState
 			return (INamedTag<Item>) ItemTags.getAllTags().getTag(this.getStateTagName(oreType));
 		}
 
-	}
-
-	public ProcessState getProcessState()
-	{
-		return this.processState;
 	}
 
 	public String getItemName(OreType oreType)
@@ -83,7 +71,7 @@ public enum OreState
 
 	public Item getItem(OreType oreType)
 	{
-		if (this.processState == ProcessState.PROCESSING)
+		if (this != OreState.ORE)
 		{
 			return MyFirstModItems.getProcessingItem(oreType, this).get();
 		}

@@ -3,7 +3,6 @@ package com.github.gisellevonbingen.datagen;
 import com.github.gisellevonbingen.MyFirstMod;
 import com.github.gisellevonbingen.common.ore.OreState;
 import com.github.gisellevonbingen.common.ore.OreType;
-import com.github.gisellevonbingen.common.ore.ProcessState;
 
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
@@ -25,7 +24,7 @@ public class ItemTagsGenerator extends ItemTagsProvider
 		{
 			for (OreState oreState : OreState.values())
 			{
-				if (oreState.getProcessState() == ProcessState.PROCESSING)
+				if (oreState != OreState.ORE)
 				{
 					Item item = oreState.getItem(oreType);
 					this.tag(oreState.getCategoryTag()).add(item);
