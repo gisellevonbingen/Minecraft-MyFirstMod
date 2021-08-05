@@ -23,6 +23,8 @@ e761bd815795b9390a238b6109096f017a58496b data/mekanism/tags/items/crystals/unkno
 2b81e6a7f2955eba3b9c8b49a13e5172905a6220 data/mekanism/tags/items/shards.json
 3ec874e30a717016d574e698979eb33f8ba827a6 data/mekanism/tags/items/shards/cobalt.json
 ccbf3a7d260a981e3988157be67b47711a72260c data/mekanism/tags/items/shards/unknownium.json
+71883a5332cfd444b3b12b9358f392dfa764e7dd data/mekanism/tags/slurries/clean.json
+90915ede14965a2eadabc17fa560a3f1731f31f4 data/mekanism/tags/slurries/dirty.json
 93de865475aab6c2ba78780a8a26c4b385e783a1 data/myfirstmod/recipes/processing/cobalt/clump/from_ore.json
 ba44f8d7e654e48a91ce64255e82d93121647519 data/myfirstmod/recipes/processing/cobalt/clump/from_shard.json
 5611cca4108907fdcfcc100b64ba145c1a0eb5ed data/myfirstmod/recipes/processing/cobalt/dirty_dust/from_clump.json

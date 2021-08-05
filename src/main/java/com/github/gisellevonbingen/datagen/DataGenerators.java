@@ -18,6 +18,7 @@ public class DataGenerators
 		if (event.includeServer())
 		{
 			generator.addProvider(new ItemTagsGenerator(generator, new BlockTagsGenerator(generator, existingFileHelper), existingFileHelper));
+			generator.addProvider(new SlurryTagsGenerator(generator, existingFileHelper));
 			generator.addProvider(new RecipesGenerator(generator));
 			generator.addProvider(new LanguagesGenerator(generator));
 		}

@@ -51,7 +51,7 @@ public enum OreState
 	{
 		if (this.processState == ProcessState.PROCESSING)
 		{
-			return com.github.gisellevonbingen.common.tag.Tags.getProcessingItemTag(oreType, this);
+			return com.github.gisellevonbingen.common.tag.MyFirstModTags.getProcessingItemTag(oreType, this);
 		}
 		else
 		{
@@ -74,7 +74,7 @@ public enum OreState
 	{
 		if (this.processState == ProcessState.PROCESSING)
 		{
-			return MyFirstModItems.getProcessingItem(oreType, this);
+			return MyFirstModItems.getProcessingItem(oreType, this).get();
 		}
 		else
 		{

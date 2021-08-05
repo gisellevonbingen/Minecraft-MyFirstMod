@@ -12,13 +12,13 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
 
-public class Tags
+public class MyFirstModTags
 {
 	public static final Map<OreType, Map<OreState, ITag.INamedTag<Item>>> PROCESSING_ITEM_TAGS = new HashMap<>();
 
 	static
 	{
-		initializeItemTags();
+		initialize();
 	}
 
 	public static ITag.INamedTag<Item> getProcessingItemTag(OreType oreType, OreState oreState)
@@ -27,7 +27,7 @@ public class Tags
 		return map != null ? map.get(oreState) : null;
 	}
 
-	public static void initializeItemTags()
+	public static void initialize()
 	{
 		for (OreType oreType : OreType.values())
 		{

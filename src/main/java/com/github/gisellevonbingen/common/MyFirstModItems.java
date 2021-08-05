@@ -13,56 +13,67 @@ import com.github.gisellevonbingen.common.ore.ProcessState;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Properties;
-import net.minecraft.item.ItemGroup;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class MyFirstModItems
 {
-	public static final Map<OreType, Map<OreState, Item>> PROCESSING_ITEMS = new HashMap<>();
+	public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS, MyFirstMod.MODID);
+	public static final Map<OreType, Map<OreState, RegistryObject<Item>>> PROCESSING_ITEMS = new HashMap<>();
 
-	public static Item getProcessingItem(OreType oreType, OreState oreState)
+	public static RegistryObject<Item> getProcessingItem(OreType oreType, OreState oreState)
 	{
-		Map<OreState, Item> map = PROCESSING_ITEMS.get(oreType);
+		Map<OreState, RegistryObject<Item>> map = PROCESSING_ITEMS.get(oreType);
 		return map != null ? map.get(oreState) : null;
 	}
 
-	public static Item[] getProcessingItems(OreState oreState)
+	public static List<RegistryObject<Item>> getProcessingItems(OreState oreState)
 	{
-		List<Item> list = new ArrayList<>();
+		List<RegistryObject<Item>> list = new ArrayList<>();
 
-		for (Entry<OreType, Map<OreState, Item>> entry : PROCESSING_ITEMS.entrySet())
+		for (Entry<OreType, Map<OreState, RegistryObject<Item>>> entry : PROCESSING_ITEMS.entrySet())
 		{
-			Item item = entry.getValue().get(oreState);
+			RegistryObject<Item> registryObject = entry.getValue().get(oreState);
 
-			if (item != null)
+			if (registryObject != null)
 			{
-				list.add(item);
+				list.add(registryObject);
 			}
 
 		}
 
-		return list.toArray(new Item[0]);
+		return list;
 	}
 
-	public static void initialize(IForgeRegistry<Item> registry)
+	public static void register()
 	{
+		register(REGISTER);
+	}
+
+	public static void register(DeferredRegister<Item> register)
+	{
+		register.register(FMLJavaModLoadingContext.get().getModEventBus());
+
 		for (OreType oreType : OreType.values())
 		{
-			Map<OreState, Item> map2 = new HashMap<>();
-			PROCESSING_ITEMS.put(oreType, map2);
+			registerOreType(register, oreType);
+		}
 
-			for (OreState oreState : OreState.values())
+	}
+
+	public static void registerOreType(DeferredRegister<Item> registry, OreType oreType)
+	{
+		Map<OreState, RegistryObject<Item>> map2 = new HashMap<>();
+		PROCESSING_ITEMS.put(oreType, map2);
+
+		for (OreState oreState : OreState.values())
+		{
+			if (oreState.getProcessState() == ProcessState.PROCESSING)
 			{
-				if (oreState.getProcessState() == ProcessState.PROCESSING)
-				{
-					String itemName = oreState.getItemName(oreType);
-					Item item = new Item(new Properties().tab(ItemGroup.TAB_MISC));
-					item.setRegistryName(MyFirstMod.MODID, itemName);
-
-					map2.put(oreState, item);
-					registry.register(item);
-				}
-
+				RegistryObject<Item> registryObject = registry.register(oreState.getItemName(oreType), () -> new Item(new Properties().tab(MyFirstModItemGroups.tabMyFirstMod)));
+				map2.put(oreState, registryObject);
 			}
 
 		}
