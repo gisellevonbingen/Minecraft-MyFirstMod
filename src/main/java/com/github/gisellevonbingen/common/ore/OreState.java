@@ -20,7 +20,8 @@ public enum OreState
 	CLUMP(MekanismTags.Items.CLUMPS),
 	SHARD(MekanismTags.Items.SHARDS),
 	CRYSTAL(MekanismTags.Items.CRYSTALS),
-	INGOT(Tags.Items.INGOTS);
+	INGOT(Tags.Items.INGOTS),
+	NUGGET(Tags.Items.NUGGETS),;
 
 	private ITag.INamedTag<Item> categoryTag;
 

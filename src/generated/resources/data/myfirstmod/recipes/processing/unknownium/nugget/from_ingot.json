@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "myfirstmod:unknownium_ingot"
+    }
+  ],
+  "result": {
+    "item": "myfirstmod:nugget_unknownium",
+    "count": 9
+  }
+}

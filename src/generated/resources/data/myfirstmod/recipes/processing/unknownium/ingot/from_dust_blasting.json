@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "myfirstmod:dust_unknownium"
+    "tag": "forge:dusts/unknownium"
   },
   "result": "myfirstmod:unknownium_ingot",
   "experience": 0.3,

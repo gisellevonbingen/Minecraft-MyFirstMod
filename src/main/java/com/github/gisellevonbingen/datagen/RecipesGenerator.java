@@ -1,5 +1,6 @@
 package com.github.gisellevonbingen.datagen;
 
+import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -24,16 +25,14 @@ import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
 import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
 import mekanism.common.registration.impl.SlurryRegistryObject;
 import mekanism.common.registries.MekanismGases;
-import net.minecraft.advancements.Advancement.Builder;
-import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -89,9 +88,30 @@ public class RecipesGenerator extends RecipeProvider
 			this.buildItemStackGasToItemStack(OreState.SHARD, OreState.CLUMP, 1, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
 			this.buildItemToItemStack(OreState.CLUMP, OreState.DIRTY_DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
 			this.buildItemToItemStack(OreState.DIRTY_DUST, OreState.DUST, 1, ItemStackToItemStackRecipeBuilder::enriching);
-			this.buildSmelting(OreState.DUST, OreState.INGOT);
+			this.buildCook(OreState.DUST, OreState.INGOT);
 
 			this.buildItemToItemStack(OreState.INGOT, OreState.DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
+			this.buildIngotToNugget();
+		}
+
+		public String from(String name)
+		{
+			return "from_" + name;
+		}
+
+		public String from(String name, String method)
+		{
+			return this.from(name) + "_" + method;
+		}
+
+		public String from(OreState oreState)
+		{
+			return this.from(oreState.name());
+		}
+
+		public String from(OreState oreState, String method)
+		{
+			return this.from(oreState.name(), method);
 		}
 
 		public void build(String name, String outputState, BiConsumer<Consumer<IFinishedRecipe>, ResourceLocation> consumer)
@@ -108,7 +128,7 @@ public class RecipesGenerator extends RecipeProvider
 				return;
 			}
 
-			this.build("from_slurry", stateOutput.name(), ChemicalCrystallizerRecipeBuilder.crystallizing(slurryInput, output)::build);
+			this.build(this.from("slurry"), stateOutput.name(), ChemicalCrystallizerRecipeBuilder.crystallizing(slurryInput, output)::build);
 		}
 
 		public void buildChemicalWashing(FluidStackIngredient fluidInput, Slurry slurryInput, Slurry slurryOutput)
@@ -146,7 +166,7 @@ public class RecipesGenerator extends RecipeProvider
 				return;
 			}
 
-			this.build("from_" + stateInput.name(), stateOutput.name(), function.apply(itemInput, gasInput, output)::build);
+			this.build(this.from(stateInput), stateOutput.name(), function.apply(itemInput, gasInput, output)::build);
 		}
 
 		public void buildItemToItemStack(OreState stateInput, OreState stateOutput, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function)
@@ -159,12 +179,12 @@ public class RecipesGenerator extends RecipeProvider
 				return;
 			}
 
-			this.build("from_" + stateInput.name(), stateOutput.name(), function.apply(itemInput, output)::build);
+			this.build(this.from(stateInput), stateOutput.name(), function.apply(itemInput, output)::build);
 		}
 
-		private void buildSmelting(OreState stateInput, OreState stateOutput)
+		private void buildCook(OreState stateInput, OreState stateOutput)
 		{
-			Ingredient itemInput = Ingredient.of(stateInput.getItemStack(this.oreType));
+			Ingredient itemInput = Ingredient.of(this.getTag(stateInput));
 			Item output = stateOutput.getItem(this.oreType);
 
 			if (itemInput == null || output == null)
@@ -172,14 +192,20 @@ public class RecipesGenerator extends RecipeProvider
 				return;
 			}
 
-			int smeltingTime = 200;
-			int blastingTime = smeltingTime / 2;
+			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
+			RecipeHelper.acceptAll(this.consumer, RecipeHelper.cook(recipeName, itemInput, output, 0.3F));
+		}
 
-			ResourceLocation smelting = this.getRecipeName(stateOutput.name(), "from_" + stateInput.name() + "_smelting");
-			this.consumer.accept(new CookingRecipeBuilder.Result(smelting, "", itemInput, output, 0.3F, smeltingTime, Builder.advancement(), smelting, IRecipeSerializer.SMELTING_RECIPE));
+		public void buildIngotToNugget()
+		{
+			OreState stateInput = OreState.INGOT;
+			OreState stateOutput = OreState.NUGGET;
+			Item itemOutput = stateOutput.getItem(this.oreType);
+			ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
+			ingredients.add(Ingredient.of(stateInput.getItem(this.oreType)));
 
-			ResourceLocation blasting = this.getRecipeName(stateOutput.name(), "from_" + stateInput.name() + "_blasting");
-			this.consumer.accept(new CookingRecipeBuilder.Result(blasting, "", itemInput, output, 0.3F, blastingTime, Builder.advancement(), blasting, IRecipeSerializer.BLASTING_RECIPE));
+			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
+			RecipeHelper.acceptAll(this.consumer, RecipeHelper.shapeless(recipeName, itemOutput, 9, ingredients));
 		}
 
 		public ResourceLocation getRecipeName(String stateOutput, String name)
@@ -194,7 +220,12 @@ public class RecipesGenerator extends RecipeProvider
 
 		public ItemStackIngredient getItemStackIngredient(OreState oreState, int amount)
 		{
-			return ItemStackIngredient.from(ItemTags.bind(oreState.getStateTagName(this.oreType).toString()), amount);
+			return ItemStackIngredient.from(this.getTag(oreState), amount);
+		}
+
+		public INamedTag<Item> getTag(OreState oreState)
+		{
+			return ItemTags.bind(oreState.getStateTagName(this.oreType).toString());
 		}
 
 		public OreType getOreType()
