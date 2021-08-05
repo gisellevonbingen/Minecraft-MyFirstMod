@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "myfirstmod:cobalt_shard",
-    "myfirstmod:unknownium_shard"
+    "myfirstmod:shard_cobalt",
+    "myfirstmod:shard_unknownium"
   ]
 }

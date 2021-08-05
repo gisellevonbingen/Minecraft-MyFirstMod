@@ -2,10 +2,10 @@
   "type": "mekanism:crushing",
   "input": {
     "ingredient": {
-      "tag": "mekanism:clumps/unknownium"
+      "tag": "forge:ingots/unknownium"
     }
   },
   "output": {
-    "item": "myfirstmod:unknownium_dirty_dust"
+    "item": "myfirstmod:dust_unknownium"
   }
 }

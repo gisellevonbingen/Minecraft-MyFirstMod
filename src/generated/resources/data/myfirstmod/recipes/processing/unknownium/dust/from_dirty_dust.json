@@ -2,11 +2,10 @@
   "type": "mekanism:enriching",
   "input": {
     "ingredient": {
-      "tag": "forge:ores/cobalt"
+      "tag": "mekanism:dirty_dusts/unknownium"
     }
   },
   "output": {
-    "item": "myfirstmod:cobalt_dust",
-    "count": 2
+    "item": "myfirstmod:dust_unknownium"
   }
 }

@@ -14,18 +14,11 @@ import com.github.gisellevonbingen.common.ore.ProcessState;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Properties;
 import net.minecraft.item.ItemGroup;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class Registration
+public class MyFirstModItems
 {
 	public static final Map<OreType, Map<OreState, Item>> PROCESSING_ITEMS = new HashMap<>();
-
-	public Registration()
-	{
-
-	}
 
 	public static Item getProcessingItem(OreType oreType, OreState oreState)
 	{
@@ -51,7 +44,7 @@ public class Registration
 		return list.toArray(new Item[0]);
 	}
 
-	public static void initializeItems(IForgeRegistry<Item> registry)
+	public static void initialize(IForgeRegistry<Item> registry)
 	{
 		for (OreType oreType : OreType.values())
 		{
@@ -74,12 +67,6 @@ public class Registration
 
 		}
 
-	}
-
-	@SubscribeEvent
-	public void onRegisterItems(RegistryEvent.Register<Item> event)
-	{
-		initializeItems(event.getRegistry());
 	}
 
 }

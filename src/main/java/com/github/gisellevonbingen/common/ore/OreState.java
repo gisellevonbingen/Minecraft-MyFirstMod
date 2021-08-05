@@ -1,6 +1,6 @@
 package com.github.gisellevonbingen.common.ore;
 
-import com.github.gisellevonbingen.common.Registration;
+import com.github.gisellevonbingen.common.MyFirstModItems;
 
 import mekanism.common.tags.MekanismTags;
 import net.minecraft.item.Item;
@@ -67,14 +67,14 @@ public enum OreState
 
 	public String getItemName(OreType oreType)
 	{
-		return oreType.getOreName().toLowerCase() + "_" + this.name().toLowerCase();
+		return this.name().toLowerCase() + "_" + oreType.getOreName().toLowerCase();
 	}
 
 	public Item getItem(OreType oreType)
 	{
 		if (this.processState == ProcessState.PROCESSING)
 		{
-			return Registration.getProcessingItem(oreType, this);
+			return MyFirstModItems.getProcessingItem(oreType, this);
 		}
 		else
 		{

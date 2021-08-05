@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "myfirstmod:cobalt_clump",
-    "myfirstmod:unknownium_clump"
+    "myfirstmod:clump_cobalt",
+    "myfirstmod:clump_unknownium"
   ]
 }
