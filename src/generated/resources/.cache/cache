@@ -25,7 +25,9 @@ e761bd815795b9390a238b6109096f017a58496b data/mekanism/tags/items/crystals/unkno
 ccbf3a7d260a981e3988157be67b47711a72260c data/mekanism/tags/items/shards/unknownium.json
 71883a5332cfd444b3b12b9358f392dfa764e7dd data/mekanism/tags/slurries/clean.json
 90915ede14965a2eadabc17fa560a3f1731f31f4 data/mekanism/tags/slurries/dirty.json
+7ca8d8c80af16e19c461509927a53ca3744e4527 data/myfirstmod/advancements/processing/cobalt/ingot/from_dust_blasting.json
 7ca8d8c80af16e19c461509927a53ca3744e4527 data/myfirstmod/advancements/processing/cobalt/ingot/from_dust_smelting.json
+7ca8d8c80af16e19c461509927a53ca3744e4527 data/myfirstmod/advancements/processing/unknownium/ingot/from_dust_blasting.json
 7ca8d8c80af16e19c461509927a53ca3744e4527 data/myfirstmod/advancements/processing/unknownium/ingot/from_dust_smelting.json
 93de865475aab6c2ba78780a8a26c4b385e783a1 data/myfirstmod/recipes/processing/cobalt/clump/from_ore.json
 ba44f8d7e654e48a91ce64255e82d93121647519 data/myfirstmod/recipes/processing/cobalt/clump/from_shard.json
@@ -34,6 +36,7 @@ d2dd5f209ffb119d9247ec73962e97e780907235 data/myfirstmod/recipes/processing/coba
 b4be96845e7ef107f52372027196d12c558dbc11 data/myfirstmod/recipes/processing/cobalt/dust/from_dirty_dust.json
 ea34660fb76a468be3dc1368a521f314709abf7b data/myfirstmod/recipes/processing/cobalt/dust/from_ingot.json
 0f338df0d1cd8cbac97f3de94a9c7445b8e62890 data/myfirstmod/recipes/processing/cobalt/dust/from_ore.json
+b68fd6d43d01773394bba1414c0bfd9a25ce4663 data/myfirstmod/recipes/processing/cobalt/ingot/from_dust_blasting.json
 2ccda3f383da4a419eafbb7542e0480fe71ba8bd data/myfirstmod/recipes/processing/cobalt/ingot/from_dust_smelting.json
 e4e5770ec1259bc0bca79714188494da8f6fd78d data/myfirstmod/recipes/processing/cobalt/shard/from_crystal.json
 1c6acc772b1a5fd223ad817a1f7bcfd8b10ba491 data/myfirstmod/recipes/processing/cobalt/shard/from_ore.json
@@ -46,6 +49,7 @@ d1ef73d5b38dcb6b65886ee4394e7c1b26de33e9 data/myfirstmod/recipes/processing/unkn
 1a5f4f86d55a10e7bf25941076a161199c72b8fa data/myfirstmod/recipes/processing/unknownium/dust/from_dirty_dust.json
 fc82a04e89d4d4b935b0dcfd5a92bf41e7a98532 data/myfirstmod/recipes/processing/unknownium/dust/from_ingot.json
 d7be5ccd4582e721637829c1012c31599f472174 data/myfirstmod/recipes/processing/unknownium/dust/from_ore.json
+2ef45e33775d18cf0405cdb0f3057ac792a57391 data/myfirstmod/recipes/processing/unknownium/ingot/from_dust_blasting.json
 9df6025a7d4beb04b4c7d10a3360fb14a558c7e2 data/myfirstmod/recipes/processing/unknownium/ingot/from_dust_smelting.json
 564424ebeff0137c051dc7b73eb68932068d1676 data/myfirstmod/recipes/processing/unknownium/shard/from_crystal.json
 89e38c0989a6d4e6dd1648b0eb667e63a0785be5 data/myfirstmod/recipes/processing/unknownium/shard/from_ore.json

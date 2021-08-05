@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "myfirstmod:dust_unknownium"
+  },
+  "result": "minecraft:air",
+  "experience": 0.3,
+  "cookingtime": 100
+}
