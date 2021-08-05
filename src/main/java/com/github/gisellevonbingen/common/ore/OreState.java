@@ -67,7 +67,18 @@ public enum OreState
 
 	public String getItemName(OreType oreType)
 	{
-		return this.name().toLowerCase() + "_" + oreType.getOreName().toLowerCase();
+		String stateName = this.name().toLowerCase();
+		String oreName = oreType.getOreName().toLowerCase();
+
+		if (this == INGOT)
+		{
+			return oreName + "_" + stateName;
+		}
+		else
+		{
+			return stateName + "_" + oreName;
+		}
+
 	}
 
 	public Item getItem(OreType oreType)

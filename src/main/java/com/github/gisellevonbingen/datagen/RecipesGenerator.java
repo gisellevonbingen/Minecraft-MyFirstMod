@@ -13,6 +13,7 @@ import com.github.gisellevonbingen.function.ThreeFunction;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.chemical.slurry.SlurryStack;
+import mekanism.api.datagen.recipe.builder.ChemicalCrystallizerRecipeBuilder;
 import mekanism.api.datagen.recipe.builder.ChemicalDissolutionRecipeBuilder;
 import mekanism.api.datagen.recipe.builder.FluidSlurryToSlurryRecipeBuilder;
 import mekanism.api.datagen.recipe.builder.ItemStackGasToItemStackRecipeBuilder;
@@ -23,11 +24,16 @@ import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
 import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
 import mekanism.common.registration.impl.SlurryRegistryObject;
 import mekanism.common.registries.MekanismGases;
+import net.minecraft.advancements.Advancement.Builder;
+import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
 import net.minecraft.fluid.Fluids;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -72,23 +78,20 @@ public class RecipesGenerator extends RecipeProvider
 			Slurry cleanSlurry = slurryRegistry.getCleanSlurry();
 
 			this.buildChemicalDissolution(OreState.ORE, dirtySlurry, 1000, sulfuricAcid);
-			this.buildWashing(water, dirtySlurry, cleanSlurry);
+			this.buildChemicalWashing(water, dirtySlurry, cleanSlurry);
+			this.buildChemicalCrystallizing(cleanSlurry, OreState.CRYSTAL, 1);
 
 			this.buildItemStackGasToItemStack(OreState.ORE, OreState.SHARD, 4, hydrogenChloride, ItemStackGasToItemStackRecipeBuilder::injecting);
 			this.buildItemStackGasToItemStack(OreState.ORE, OreState.CLUMP, 3, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
 			this.buildItemToItemStack(OreState.ORE, OreState.DUST, 2, ItemStackToItemStackRecipeBuilder::enriching);
 
+			this.buildItemStackGasToItemStack(OreState.CRYSTAL, OreState.SHARD, 1, hydrogenChloride, ItemStackGasToItemStackRecipeBuilder::injecting);
 			this.buildItemStackGasToItemStack(OreState.SHARD, OreState.CLUMP, 1, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
 			this.buildItemToItemStack(OreState.CLUMP, OreState.DIRTY_DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
 			this.buildItemToItemStack(OreState.DIRTY_DUST, OreState.DUST, 1, ItemStackToItemStackRecipeBuilder::enriching);
-			this.buildItemToItemStack(OreState.DUST, OreState.INGOT, 1, ItemStackToItemStackRecipeBuilder::smelting);
+			this.buildSmelting(OreState.DUST, OreState.INGOT);
 
 			this.buildItemToItemStack(OreState.INGOT, OreState.DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
-		}
-
-		public void build(OreState inputState, OreState outputState, BiConsumer<Consumer<IFinishedRecipe>, ResourceLocation> consumer)
-		{
-			this.build("from_" + inputState.name(), outputState.name(), consumer);
 		}
 
 		public void build(String name, String outputState, BiConsumer<Consumer<IFinishedRecipe>, ResourceLocation> consumer)
@@ -96,7 +99,20 @@ public class RecipesGenerator extends RecipeProvider
 			consumer.accept(this.consumer, this.getRecipeName(outputState, name));
 		}
 
-		public void buildWashing(FluidStackIngredient fluidInput, Slurry slurryInput, Slurry slurryOutput)
+		public void buildChemicalCrystallizing(Slurry slurryInput, OreState stateOutput, int outputCount)
+		{
+			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
+
+			if (slurryInput == null || output == null || output.isEmpty() == true)
+			{
+				return;
+			}
+
+			SlurryStackIngredient slurryStackInput = SlurryStackIngredient.from(new SlurryStack(slurryInput, 200));
+			this.build("from_slurry", stateOutput.name(), ChemicalCrystallizerRecipeBuilder.crystallizing(slurryStackInput, output)::build);
+		}
+
+		public void buildChemicalWashing(FluidStackIngredient fluidInput, Slurry slurryInput, Slurry slurryOutput)
 		{
 			if (fluidInput == null || slurryInput == null || slurryOutput == null)
 			{
@@ -131,7 +147,7 @@ public class RecipesGenerator extends RecipeProvider
 				return;
 			}
 
-			this.build(stateInput, stateOutput, function.apply(itemInput, gasInput, output)::build);
+			this.build("from_" + stateInput.name(), stateOutput.name(), function.apply(itemInput, gasInput, output)::build);
 		}
 
 		public void buildItemToItemStack(OreState stateInput, OreState stateOutput, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function)
@@ -144,7 +160,21 @@ public class RecipesGenerator extends RecipeProvider
 				return;
 			}
 
-			this.build(stateInput, stateOutput, function.apply(itemInput, output)::build);
+			this.build("from_" + stateInput.name(), stateOutput.name(), function.apply(itemInput, output)::build);
+		}
+
+		private void buildSmelting(OreState stateInput, OreState stateOutput)
+		{
+			Ingredient itemInput = Ingredient.of(stateInput.getItemStack(this.oreType));
+			Item output = stateOutput.getItem(this.oreType);
+
+			if (itemInput == null || output == null)
+			{
+				return;
+			}
+
+			ResourceLocation smelting = this.getRecipeName(stateOutput.name(), "from_" + stateInput.name() + "_smelting");
+			this.consumer.accept(new CookingRecipeBuilder.Result(smelting, "", itemInput, output, 0.3F, 200, Builder.advancement(), smelting, IRecipeSerializer.SMELTING_RECIPE));
 		}
 
 		public ResourceLocation getRecipeName(String stateOutput, String name)
