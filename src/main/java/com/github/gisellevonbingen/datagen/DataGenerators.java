@@ -17,15 +17,16 @@ public class DataGenerators
 
 		if (event.includeServer())
 		{
+			generator.addProvider(new ItemTagsGenerator(generator, new BlockTagsGenerator(generator, existingFileHelper), existingFileHelper));
 			generator.addProvider(new RecipesGenerator(generator));
-            generator.addProvider(new LanguageGenerator(generator));
+			generator.addProvider(new LanguagesGenerator(generator));
 		}
-		
+
 		if (event.includeClient())
 		{
 			generator.addProvider(new ItemsModelGenerator(generator, existingFileHelper));
 		}
-		
+
 	}
-	
+
 }

@@ -1,0 +1,11 @@
+{
+  "type": "mekanism:smelting",
+  "input": {
+    "ingredient": {
+      "tag": "mekanism:dirty_dusts/unknownium"
+    }
+  },
+  "output": {
+    "item": "myfirstmod:unknownium_dust"
+  }
+}

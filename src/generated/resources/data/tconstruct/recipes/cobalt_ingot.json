@@ -2,11 +2,10 @@
   "type": "mekanism:smelting",
   "input": {
     "ingredient": {
-      "tag": "minecraft:coals"
+      "tag": "forge:dusts/cobalt"
     }
   },
   "output": {
-    "item": "myfirstmod:rock",
-    "count": 64
+    "item": "tconstruct:cobalt_ingot"
   }
 }

@@ -1,47 +1,82 @@
 package com.github.gisellevonbingen.common.ore;
 
-import java.util.List;
+import com.github.gisellevonbingen.common.Registration;
 
-import javax.annotation.Nullable;
-
-import mekanism.common.Mekanism;
+import mekanism.common.tags.MekanismTags;
 import net.minecraft.item.Item;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.RegistryManager;
 
 public enum OreState
 {
-	ORE("minecraft", "ores"),
-	DUST(Mekanism.MODID, "dusts"),
-	DIRTY_DUST(Mekanism.MODID, "dustDirtys"),
-	CLUMP(Mekanism.MODID, "clumps"),
-	SHARD(Mekanism.MODID, "shards"),
-	CRYSTAL(Mekanism.MODID, "crystals"),;
+	ORE(Tags.Items.ORES, ProcessState.ORE),
+	DUST(Tags.Items.DUSTS),
+	DIRTY_DUST(MekanismTags.Items.DIRTY_DUSTS),
+	CLUMP(MekanismTags.Items.CLUMPS),
+	SHARD(MekanismTags.Items.SHARDS),
+	CRYSTAL(MekanismTags.Items.CRYSTALS),
+	INGOT(Tags.Items.INGOTS, ProcessState.INGOT);
 
-	private String modId;
-	private String tagPrefix;
+	private ITag.INamedTag<Item> categoryTag;
+	private ProcessState processState;
 
-	OreState(String modId, String tagPrefix)
+	OreState(ITag.INamedTag<Item> categoryTag)
 	{
-		this.modId = modId;
-		this.tagPrefix = tagPrefix;
+		this(categoryTag, ProcessState.PROCESSING);
 	}
 
-	public String getModId()
+	OreState(ITag.INamedTag<Item> categoryTag, ProcessState processState)
 	{
-		return modId;
+		this.categoryTag = categoryTag;
+		this.processState = processState;
 	}
 
-	public ResourceLocation getTag(String oreName)
+	public ITag.INamedTag<Item> getCategoryTag()
 	{
-		return new ResourceLocation(this.modId, this.tagPrefix + "/" + oreName);
+		return this.categoryTag;
 	}
 
-	@Nullable
-	public Item getItem(String oreName)
+	public INamedTag<Item> getProcessingTag(OreType oreType)
 	{
-		List<Item> items = ItemTags.bind(this.getTag(oreName).toString()).getValues();
-		return items.stream().findAny().get();
+		return com.github.gisellevonbingen.common.tag.Tags.getProcessingItemTag(oreType, this);
+	}
+
+	public ProcessState getProcessState()
+	{
+		return this.processState;
+	}
+
+	public String getItemName(OreType oreType)
+	{
+		return oreType.getOreName().toLowerCase() + "_" + this.name().toLowerCase();
+	}
+
+	public Item getItem(OreType oreType)
+	{
+		if (this.processState == ProcessState.PROCESSING)
+		{
+			return Registration.getProcessingItem(oreType, this);
+		}
+		else
+		{
+			String itemName = this.getItemName(oreType);
+			return RegistryManager.ACTIVE.getRegistry(Item.class).getValue(new ResourceLocation(oreType.getModId(), itemName));
+		}
+
+	}
+
+	public ItemStack getItemStack(OreType oreType)
+	{
+		return new ItemStack(this.getItem(oreType));
+	}
+
+	public ItemStack getItemStack(OreType oreType, int count)
+	{
+		return new ItemStack(this.getItem(oreType), count);
 	}
 
 }

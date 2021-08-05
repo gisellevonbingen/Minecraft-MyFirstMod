@@ -5,20 +5,21 @@ import com.github.gisellevonbingen.common.ore.OreState;
 import com.github.gisellevonbingen.common.ore.OreType;
 import com.github.gisellevonbingen.common.ore.ProcessState;
 
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class ItemsModelGenerator extends ItemModelProvider
+public class ItemTagsGenerator extends ItemTagsProvider
 {
-	public ItemsModelGenerator(DataGenerator generator, ExistingFileHelper existingFileHelper)
+	public ItemTagsGenerator(DataGenerator p_i244817_1_, BlockTagsProvider p_i244817_2_, ExistingFileHelper p_i244817_4_)
 	{
-		super(generator, MyFirstMod.MODID, existingFileHelper);
+		super(p_i244817_1_, p_i244817_2_, MyFirstMod.MODID, p_i244817_4_);
 	}
 
 	@Override
-	protected void registerModels()
+	protected void addTags()
 	{
 		for (OreType oreType : OreType.values())
 		{
@@ -27,7 +28,8 @@ public class ItemsModelGenerator extends ItemModelProvider
 				if (oreState.getProcessState() == ProcessState.PROCESSING)
 				{
 					Item item = oreState.getItem(oreType);
-					this.singleTexture(item.getRegistryName().getPath(), this.mcLoc("item/generated"), "layer0", this.modLoc("item/" + oreState.name().toLowerCase()));
+					this.tag(oreState.getCategoryTag()).add(item);
+					this.tag(oreState.getProcessingTag(oreType)).add(item);
 				}
 
 			}

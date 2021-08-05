@@ -7,6 +7,7 @@ import com.github.gisellevonbingen.common.ModSetup;
 import com.github.gisellevonbingen.common.Registration;
 import com.github.gisellevonbingen.datagen.DataGenerators;
 
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -18,10 +19,10 @@ public class MyFirstMod
 
 	public MyFirstMod()
 	{
-		Registration.init();
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-		FMLJavaModLoadingContext.get().getModEventBus().register(new DataGenerators());
-
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		modEventBus.addListener(ModSetup::init);
+		modEventBus.register(new Registration());
+		modEventBus.register(new DataGenerators());
 	}
 
 }

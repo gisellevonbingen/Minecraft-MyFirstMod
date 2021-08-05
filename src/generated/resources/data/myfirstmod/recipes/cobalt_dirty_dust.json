@@ -1,0 +1,11 @@
+{
+  "type": "mekanism:smelting",
+  "input": {
+    "ingredient": {
+      "tag": "mekanism:clumps/cobalt"
+    }
+  },
+  "output": {
+    "item": "myfirstmod:cobalt_dirty_dust"
+  }
+}
