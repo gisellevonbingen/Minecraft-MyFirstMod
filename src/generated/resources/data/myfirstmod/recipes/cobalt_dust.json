@@ -1,5 +1,5 @@
 {
-  "type": "mekanism:smelting",
+  "type": "mekanism:enriching",
   "input": {
     "ingredient": {
       "tag": "mekanism:dirty_dusts/cobalt"

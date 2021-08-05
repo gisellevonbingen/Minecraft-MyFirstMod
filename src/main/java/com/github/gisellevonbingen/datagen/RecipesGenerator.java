@@ -1,6 +1,7 @@
 package com.github.gisellevonbingen.datagen;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import com.github.gisellevonbingen.common.ore.OreState;
@@ -33,17 +34,7 @@ public class RecipesGenerator extends RecipeProvider
 
 	}
 
-	public void processChemicalInjection(OreType oreType, OreState inputState, OreState outputState, int outputCount, BiConsumer<ItemStackIngredient, ItemStack> c, Consumer<IFinishedRecipe> consumer)
-	{
-
-	}
-
-	public void processPurification(OreType oreType, OreState inputState, OreState outputState, int outputCount, BiConsumer<ItemStackIngredient, ItemStack> c, Consumer<IFinishedRecipe> consumer)
-	{
-
-	}
-
-	public void processItemToItem(OreType oreType, OreState inputState, OreState outputState, int outputCount, BiConsumer<ItemStackIngredient, ItemStack> c, Consumer<IFinishedRecipe> consumer)
+	public void processItemToItem(OreType oreType, OreState inputState, OreState outputState, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function, Consumer<IFinishedRecipe> consumer)
 	{
 		INamedTag<Item> input = Tags.getProcessingItemTag(oreType, inputState);
 		ItemStack output = outputState.getItemStack(oreType, outputCount);
@@ -53,7 +44,7 @@ public class RecipesGenerator extends RecipeProvider
 			return;
 		}
 
-		ItemStackToItemStackRecipeBuilder.smelting(ItemStackIngredient.from(input), output).build(consumer);
+		function.apply(ItemStackIngredient.from(input), output).build(consumer);
 	}
 
 	public void build(OreType oreType, Consumer<IFinishedRecipe> consumer)

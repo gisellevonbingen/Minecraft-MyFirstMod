@@ -1,5 +1,5 @@
 {
-  "type": "mekanism:smelting",
+  "type": "mekanism:crushing",
   "input": {
     "ingredient": {
       "tag": "mekanism:clumps/unknownium"
