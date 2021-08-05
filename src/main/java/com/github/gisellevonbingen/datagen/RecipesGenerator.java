@@ -5,22 +5,32 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import com.github.gisellevonbingen.MyFirstMod;
+import com.github.gisellevonbingen.common.MyFirstModSlurries;
 import com.github.gisellevonbingen.common.ore.OreState;
 import com.github.gisellevonbingen.common.ore.OreType;
 import com.github.gisellevonbingen.function.ThreeFunction;
 
 import mekanism.api.chemical.gas.GasStack;
+import mekanism.api.chemical.slurry.Slurry;
+import mekanism.api.chemical.slurry.SlurryStack;
+import mekanism.api.datagen.recipe.builder.ChemicalDissolutionRecipeBuilder;
+import mekanism.api.datagen.recipe.builder.FluidSlurryToSlurryRecipeBuilder;
 import mekanism.api.datagen.recipe.builder.ItemStackGasToItemStackRecipeBuilder;
 import mekanism.api.datagen.recipe.builder.ItemStackToItemStackRecipeBuilder;
+import mekanism.api.recipes.inputs.FluidStackIngredient;
 import mekanism.api.recipes.inputs.ItemStackIngredient;
 import mekanism.api.recipes.inputs.chemical.GasStackIngredient;
+import mekanism.api.recipes.inputs.chemical.SlurryStackIngredient;
+import mekanism.common.registration.impl.SlurryRegistryObject;
 import mekanism.common.registries.MekanismGases;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RecipesGenerator extends RecipeProvider
 {
@@ -52,10 +62,19 @@ public class RecipesGenerator extends RecipeProvider
 
 		public void build()
 		{
-			GasStackIngredient hCl = GasStackIngredient.from(new GasStack(MekanismGases.HYDROGEN_CHLORIDE.get(), 1));
+			GasStackIngredient hydrogenChloride = GasStackIngredient.from(new GasStack(MekanismGases.HYDROGEN_CHLORIDE.get(), 1));
 			GasStackIngredient oxygen = GasStackIngredient.from(new GasStack(MekanismGases.OXYGEN.get(), 1));
+			GasStackIngredient sulfuricAcid = GasStackIngredient.from(new GasStack(MekanismGases.SULFURIC_ACID.get(), 1));
+			FluidStackIngredient water = FluidStackIngredient.from(new FluidStack(Fluids.WATER, 5));
 
-			this.buildItemStackGasToItemStack(OreState.ORE, OreState.SHARD, 4, hCl, ItemStackGasToItemStackRecipeBuilder::injecting);
+			SlurryRegistryObject<Slurry, Slurry> slurryRegistry = MyFirstModSlurries.getSlurryRegistry(this.oreType);
+			Slurry dirtySlurry = slurryRegistry.getDirtySlurry();
+			Slurry cleanSlurry = slurryRegistry.getCleanSlurry();
+
+			this.buildChemicalDissolution(OreState.ORE, dirtySlurry, 1000, sulfuricAcid);
+			this.buildWashing(water, dirtySlurry, cleanSlurry);
+
+			this.buildItemStackGasToItemStack(OreState.ORE, OreState.SHARD, 4, hydrogenChloride, ItemStackGasToItemStackRecipeBuilder::injecting);
 			this.buildItemStackGasToItemStack(OreState.ORE, OreState.CLUMP, 3, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
 			this.buildItemToItemStack(OreState.ORE, OreState.DUST, 2, ItemStackToItemStackRecipeBuilder::enriching);
 
@@ -69,38 +88,68 @@ public class RecipesGenerator extends RecipeProvider
 
 		public void build(OreState inputState, OreState outputState, BiConsumer<Consumer<IFinishedRecipe>, ResourceLocation> consumer)
 		{
-			consumer.accept(this.consumer, this.getRecipeName(inputState, outputState));
+			this.build("from_" + inputState.name(), outputState.name(), consumer);
 		}
 
-		public void buildItemStackGasToItemStack(OreState inputState, OreState outputState, int outputCount, GasStackIngredient gasInput, ThreeFunction<ItemStackIngredient, GasStackIngredient, ItemStack, ItemStackGasToItemStackRecipeBuilder> function)
+		public void build(String name, String outputState, BiConsumer<Consumer<IFinishedRecipe>, ResourceLocation> consumer)
 		{
-			ItemStackIngredient input = this.getItemStackIngredient(inputState);
-			ItemStack output = outputState.getItemStack(this.oreType, outputCount);
+			consumer.accept(this.consumer, this.getRecipeName(outputState, name));
+		}
 
-			if (input == null || output == null || output.isEmpty() == true || gasInput == null)
+		public void buildWashing(FluidStackIngredient fluidInput, Slurry slurryInput, Slurry slurryOutput)
+		{
+			if (fluidInput == null || slurryInput == null || slurryOutput == null)
 			{
 				return;
 			}
 
-			this.build(inputState, outputState, function.apply(input, gasInput, output)::build);
+			SlurryStackIngredient slurryStackInput = SlurryStackIngredient.from(new SlurryStack(slurryInput, 1));
+			SlurryStack slurryStackOutput = new SlurryStack(slurryOutput, 1);
+			this.build("clean", "slurry", FluidSlurryToSlurryRecipeBuilder.washing(fluidInput, slurryStackInput, slurryStackOutput)::build);
 		}
 
-		public void buildItemToItemStack(OreState inputState, OreState outputState, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function)
+		public void buildChemicalDissolution(OreState stateInput, Slurry slurryOutput, int outputAmount, GasStackIngredient gasInput)
 		{
-			ItemStackIngredient input = this.getItemStackIngredient(inputState);
-			ItemStack output = outputState.getItemStack(this.oreType, outputCount);
+			ItemStackIngredient itemInput = this.getItemStackIngredient(stateInput);
 
-			if (input == null || output == null || output.isEmpty() == true)
+			if (itemInput == null || slurryOutput == null || gasInput == null)
 			{
 				return;
 			}
 
-			this.build(inputState, outputState, function.apply(input, output)::build);
+			SlurryStack slurryStackOutput = new SlurryStack(slurryOutput, outputAmount);
+			this.build("dirty", "slurry", ChemicalDissolutionRecipeBuilder.dissolution(itemInput, gasInput, slurryStackOutput)::build);
 		}
 
-		public ResourceLocation getRecipeName(OreState inputState, OreState outputState)
+		public void buildItemStackGasToItemStack(OreState stateInput, OreState stateOutput, int outputCount, GasStackIngredient gasInput, ThreeFunction<ItemStackIngredient, GasStackIngredient, ItemStack, ItemStackGasToItemStackRecipeBuilder> function)
 		{
-			return new ResourceLocation(MyFirstMod.MODID, ("processing/" + this.oreType.name() + "/" + outputState.name() + "/from_" + inputState.name()).toLowerCase());
+			ItemStackIngredient itemInput = this.getItemStackIngredient(stateInput);
+			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
+
+			if (itemInput == null || output == null || output.isEmpty() == true || gasInput == null)
+			{
+				return;
+			}
+
+			this.build(stateInput, stateOutput, function.apply(itemInput, gasInput, output)::build);
+		}
+
+		public void buildItemToItemStack(OreState stateInput, OreState stateOutput, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function)
+		{
+			ItemStackIngredient itemInput = this.getItemStackIngredient(stateInput);
+			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
+
+			if (itemInput == null || output == null || output.isEmpty() == true)
+			{
+				return;
+			}
+
+			this.build(stateInput, stateOutput, function.apply(itemInput, output)::build);
+		}
+
+		public ResourceLocation getRecipeName(String stateOutput, String name)
+		{
+			return new ResourceLocation(MyFirstMod.MODID, ("processing/" + this.oreType.name() + "/" + stateOutput + "/" + name).toLowerCase());
 		}
 
 		public ItemStackIngredient getItemStackIngredient(OreState oreState)

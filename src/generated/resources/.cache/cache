@@ -32,6 +32,8 @@ b4be96845e7ef107f52372027196d12c558dbc11 data/myfirstmod/recipes/processing/coba
 ea34660fb76a468be3dc1368a521f314709abf7b data/myfirstmod/recipes/processing/cobalt/dust/from_ingot.json
 0f338df0d1cd8cbac97f3de94a9c7445b8e62890 data/myfirstmod/recipes/processing/cobalt/dust/from_ore.json
 1c6acc772b1a5fd223ad817a1f7bcfd8b10ba491 data/myfirstmod/recipes/processing/cobalt/shard/from_ore.json
+a05148de7ac9f00f1a98fcfb3e87a2fd8381470a data/myfirstmod/recipes/processing/cobalt/slurry/clean.json
+2b92f7627a69d0a89feb12f198f46daec646af14 data/myfirstmod/recipes/processing/cobalt/slurry/dirty.json
 08162eac804c869dd610258a7ca86cf2121f0365 data/myfirstmod/recipes/processing/unknownium/clump/from_ore.json
 e95752dca8bed219b3e76b58c46fc8b49a209f35 data/myfirstmod/recipes/processing/unknownium/clump/from_shard.json
 d1ef73d5b38dcb6b65886ee4394e7c1b26de33e9 data/myfirstmod/recipes/processing/unknownium/dirty_dust/from_clump.json
@@ -39,3 +41,5 @@ d1ef73d5b38dcb6b65886ee4394e7c1b26de33e9 data/myfirstmod/recipes/processing/unkn
 fc82a04e89d4d4b935b0dcfd5a92bf41e7a98532 data/myfirstmod/recipes/processing/unknownium/dust/from_ingot.json
 d7be5ccd4582e721637829c1012c31599f472174 data/myfirstmod/recipes/processing/unknownium/dust/from_ore.json
 89e38c0989a6d4e6dd1648b0eb667e63a0785be5 data/myfirstmod/recipes/processing/unknownium/shard/from_ore.json
+f025ec7e4e833ab2382d21c271dde17c2ac425ff data/myfirstmod/recipes/processing/unknownium/slurry/clean.json
+0b2353bf81ef27bd93eaabe74a37c361a9b7a325 data/myfirstmod/recipes/processing/unknownium/slurry/dirty.json
