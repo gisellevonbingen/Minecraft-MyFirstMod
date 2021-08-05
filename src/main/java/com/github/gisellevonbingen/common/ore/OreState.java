@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.RegistryManager;
@@ -35,14 +36,28 @@ public enum OreState
 		this.processState = processState;
 	}
 
-	public ITag.INamedTag<Item> getCategoryTag()
+	public INamedTag<Item> getCategoryTag()
 	{
 		return this.categoryTag;
 	}
 
-	public INamedTag<Item> getProcessingTag(OreType oreType)
+	public ResourceLocation getStateTagName(OreType oreType)
 	{
-		return com.github.gisellevonbingen.common.tag.Tags.getProcessingItemTag(oreType, this);
+		ResourceLocation categoryTagName = this.getCategoryTag().getName();
+		return new ResourceLocation(categoryTagName.getNamespace(), categoryTagName.getPath() + "/" + oreType.getOreName());
+	}
+
+	public INamedTag<Item> getStateTag(OreType oreType)
+	{
+		if (this.processState == ProcessState.PROCESSING)
+		{
+			return com.github.gisellevonbingen.common.tag.Tags.getProcessingItemTag(oreType, this);
+		}
+		else
+		{
+			return (INamedTag<Item>) ItemTags.getAllTags().getTag(this.getStateTagName(oreType));
+		}
+
 	}
 
 	public ProcessState getProcessState()

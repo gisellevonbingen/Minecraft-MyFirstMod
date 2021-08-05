@@ -29,7 +29,7 @@ public class ItemTagsGenerator extends ItemTagsProvider
 				{
 					Item item = oreState.getItem(oreType);
 					this.tag(oreState.getCategoryTag()).add(item);
-					this.tag(oreState.getProcessingTag(oreType)).add(item);
+					this.tag(oreState.getStateTag(oreType)).add(item);
 				}
 
 			}

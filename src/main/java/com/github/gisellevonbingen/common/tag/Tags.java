@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 
 public class Tags
 {
@@ -51,9 +50,7 @@ public class Tags
 
 	private static ITag.INamedTag<Item> tag(OreType oreType, OreState oreState)
 	{
-		ResourceLocation categoryTagRL = oreState.getCategoryTag().getName();
-		ResourceLocation oreTagRL = new ResourceLocation(categoryTagRL.getNamespace(), categoryTagRL.getPath() + "/" + oreType.getOreName());
-		return ItemTags.bind(oreTagRL.toString());
+		return ItemTags.bind(oreState.getStateTagName(oreType).toString());
 	}
 
 }
