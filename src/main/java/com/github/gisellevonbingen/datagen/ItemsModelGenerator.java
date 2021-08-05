@@ -36,9 +36,7 @@ public class ItemsModelGenerator extends ItemModelProvider
 				Field enableField = ExistingFileHelper.class.getDeclaredField("enable");
 				enableField.setAccessible(true);
 				offset = unsafe.objectFieldOffset(enableField);
-
 				unsafe.putBoolean(this.existingFileHelper, offset, false);
-				boolean n = this.existingFileHelper.isEnabled();
 
 				this.onRegisterModels();
 			}
@@ -54,7 +52,7 @@ public class ItemsModelGenerator extends ItemModelProvider
 			{
 				if (offset != 0)
 				{
-					unsafe.putBoolean(existingFileHelper, offset, enable);
+					unsafe.putBoolean(this.existingFileHelper, offset, enable);
 				}
 
 			}
