@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
+import com.github.gisellevonbingen.common.ore.OreState;
 import com.github.gisellevonbingen.common.ore.OreType;
 
 import mekanism.api.chemical.slurry.Slurry;
+import mekanism.api.chemical.slurry.SlurryBuilder;
 import mekanism.common.registration.impl.SlurryDeferredRegister;
 import mekanism.common.registration.impl.SlurryRegistryObject;
 import mekanism.common.registries.MekanismSlurries;
+import net.minecraft.item.Item;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class MyFirstModSlurries
@@ -32,8 +36,31 @@ public class MyFirstModSlurries
 
 		for (OreType oreType : OreType.values())
 		{
-			SlurryRegistryObject<Slurry, Slurry> registryObject = register.register(oreType.getOreName(), UnaryOperator.identity());
+			SlurryRegistryObject<Slurry, Slurry> registryObject = register.register(oreType.getOreName(), new SlurryBuildOperator(oreType));
 			SLURRIES.put(oreType, registryObject);
+		}
+
+	}
+
+	public static final class SlurryBuildOperator implements UnaryOperator<SlurryBuilder>
+	{
+		private final OreType oreType;
+
+		private SlurryBuildOperator(OreType oreType)
+		{
+			this.oreType = oreType;
+		}
+
+		@Override
+		public SlurryBuilder apply(SlurryBuilder builder)
+		{
+			INamedTag<Item> tag = OreState.ORE.getStateTag(this.oreType);
+			return builder.color(this.oreType.getColor()).ore(tag);
+		}
+
+		public OreType getOreType()
+		{
+			return this.oreType;
 		}
 
 	}

@@ -6,7 +6,6 @@ import com.github.gisellevonbingen.common.ore.OreType;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 
 public class MyFirstModItemGroups
 {
@@ -16,12 +15,6 @@ public class MyFirstModItemGroups
 		public ItemStack makeIcon()
 		{
 			return OreState.CRYSTAL.getItemStack(OreType.Cobalt);
-		}
-
-		@Override
-		public ITextComponent getDisplayName()
-		{
-			return super.getDisplayName();
 		}
 
 	};

@@ -2,26 +2,26 @@ package com.github.gisellevonbingen.common.ore;
 
 public enum OreType
 {
-	Cobalt("tconstruct", "cobalt"),
-	Unknownium(null, "unknownium"),;
+	Cobalt("cobalt", 0x2376DD),
+	Unknownium("unknownium", 0xFFFFFF),;
 
-	private String modId;
 	private String oreName;
+	private int color;
 
-	private OreType(String modId, String oreName)
+	private OreType(String oreName, int color)
 	{
-		this.modId = modId;
 		this.oreName = oreName;
-	}
-	
-	public String getModId()
-	{
-		return this.modId;
+		this.color = 0xFF000000 | color;
 	}
 
 	public String getOreName()
 	{
 		return this.oreName;
+	}
+
+	public int getColor()
+	{
+		return this.color;
 	}
 
 }

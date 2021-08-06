@@ -1,5 +1,7 @@
 package com.github.gisellevonbingen.common.ore;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import com.github.gisellevonbingen.common.MyFirstModItems;
 
 import mekanism.common.tags.MekanismTags;
@@ -10,7 +12,6 @@ import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.RegistryManager;
 
 public enum OreState
 {
@@ -78,8 +79,7 @@ public enum OreState
 		}
 		else
 		{
-			String itemName = this.getItemName(oreType);
-			return RegistryManager.ACTIVE.getRegistry(Item.class).getValue(new ResourceLocation(oreType.getModId(), itemName));
+			throw new NotImplementedException("getItem(" + oreType.name() + ")");
 		}
 
 	}
