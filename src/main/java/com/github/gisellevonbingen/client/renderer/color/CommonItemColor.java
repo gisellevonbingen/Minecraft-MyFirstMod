@@ -1,15 +1,15 @@
 package com.github.gisellevonbingen.client.renderer.color;
 
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialType;
 
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 
 public class CommonItemColor implements IItemColor
 {
-	private OreType type;
+	private MaterialType type;
 
-	public CommonItemColor(OreType type)
+	public CommonItemColor(MaterialType type)
 	{
 		this.type = type;
 	}
@@ -20,7 +20,7 @@ public class CommonItemColor implements IItemColor
 		return 0xFF000000 | this.type.getColor();
 	}
 
-	public OreType getType()
+	public MaterialType getType()
 	{
 		return this.type;
 	}

@@ -1,0 +1,23 @@
+{
+  "materialType._comment_0": "",
+  "materialType._comment_1": "===== Material Type =====",
+  "materialType._comment_2": "",
+  "materialType.cobalt": "Cobalt",
+  "materialType.unknownium": "Unknownium",
+  "statedMaterial._comment_0": "",
+  "statedMaterial._comment_1": "===== ItemStatedMaterial Common Rule =====",
+  "statedMaterial._comment_2": "",
+  "statedMaterial._comment_3": "%s is material type (e.g. Cobalt, Silver)",
+  "statedMaterial._comment_4": "    from materialType.xxxxx",
+  "statedMaterial._comment_5": "",
+  "statedMaterial._comment_6": "Items can override this rule thought by declare that item's translation",
+  "statedMaterial._comment_7": "    e.g.) \"item.cobalt_ingot\" : \"Blue Metal\"",
+  "statedMaterial.clump": "%s Clump",
+  "statedMaterial.crystal": "%s Crystal",
+  "statedMaterial.dirty_dust": "Dirty %s Dust",
+  "statedMaterial.dust": "%s Dust",
+  "statedMaterial.ingot": "%s Ingot",
+  "statedMaterial.nugget": "%s Nugget",
+  "statedMaterial.ore": "%s Ore",
+  "statedMaterial.shard": "%s Shard"
+}

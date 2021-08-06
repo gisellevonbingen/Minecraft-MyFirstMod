@@ -1,8 +1,8 @@
 package com.github.gisellevonbingen.datagen;
 
 import com.github.gisellevonbingen.MyFirstMod;
-import com.github.gisellevonbingen.common.ore.OreState;
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialState;
+import com.github.gisellevonbingen.common.material.MaterialType;
 
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
@@ -20,15 +20,15 @@ public class ItemTagsGenerator extends ItemTagsProvider
 	@Override
 	protected void addTags()
 	{
-		for (OreType oreType : OreType.values())
+		for (MaterialType materialType : MaterialType.values())
 		{
-			for (OreState oreState : OreState.values())
+			for (MaterialState materialState : MaterialState.values())
 			{
-				if (oreState != OreState.ORE)
+				if (materialState != MaterialState.ORE)
 				{
-					Item item = oreState.getItem(oreType);
-					this.tag(oreState.getCategoryTag()).add(item);
-					this.tag(oreState.getStateTag(oreType)).add(item);
+					Item item = materialState.getItem(materialType);
+					this.tag(materialState.getCategoryTag()).add(item);
+					this.tag(materialState.getStateTag(materialType)).add(item);
 				}
 
 			}

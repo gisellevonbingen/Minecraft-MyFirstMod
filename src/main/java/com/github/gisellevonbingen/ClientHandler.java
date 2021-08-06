@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 
 import com.github.gisellevonbingen.client.renderer.color.CommonItemColor;
 import com.github.gisellevonbingen.common.MyFirstModItems;
-import com.github.gisellevonbingen.common.ore.OreState;
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialState;
+import com.github.gisellevonbingen.common.material.MaterialType;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -26,7 +26,7 @@ public class ClientHandler
 	@SubscribeEvent
 	public void registerItemColors(ColorHandlerEvent.Item event)
 	{
-		for (Entry<OreType, Map<OreState, RegistryObject<Item>>> entry : MyFirstModItems.PROCESSING_ITEMS.entrySet())
+		for (Entry<MaterialType, Map<MaterialState, RegistryObject<Item>>> entry : MyFirstModItems.PROCESSING_ITEMS.entrySet())
 		{
 			CommonItemColor itemColor = new CommonItemColor(entry.getKey());
 

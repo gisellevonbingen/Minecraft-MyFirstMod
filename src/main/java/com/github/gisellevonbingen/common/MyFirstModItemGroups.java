@@ -1,8 +1,8 @@
 package com.github.gisellevonbingen.common;
 
 import com.github.gisellevonbingen.MyFirstMod;
-import com.github.gisellevonbingen.common.ore.OreState;
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialState;
+import com.github.gisellevonbingen.common.material.MaterialType;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,7 @@ public class MyFirstModItemGroups
 		@Override
 		public ItemStack makeIcon()
 		{
-			return OreState.CRYSTAL.getItemStack(OreType.Cobalt);
+			return MaterialState.CRYSTAL.getItemStack(MaterialType.Cobalt);
 		}
 
 	};

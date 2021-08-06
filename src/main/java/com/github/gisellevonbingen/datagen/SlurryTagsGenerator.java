@@ -2,7 +2,7 @@ package com.github.gisellevonbingen.datagen;
 
 import com.github.gisellevonbingen.MyFirstMod;
 import com.github.gisellevonbingen.common.MyFirstModSlurries;
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialType;
 
 import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.datagen.tag.ChemicalTagsProvider.SlurryTagsProvider;
@@ -30,9 +30,9 @@ public class SlurryTagsGenerator extends SlurryTagsProvider
 		Builder<Slurry> dirty = this.tag(MekanismTags.Slurries.DIRTY);
 		Builder<Slurry> clean = this.tag(MekanismTags.Slurries.CLEAN);
 
-		for (OreType oreType : OreType.values())
+		for (MaterialType materialType : MaterialType.values())
 		{
-			SlurryRegistryObject<Slurry, Slurry> registry = MyFirstModSlurries.getSlurryRegistry(oreType);
+			SlurryRegistryObject<Slurry, Slurry> registry = MyFirstModSlurries.getSlurryRegistry(materialType);
 			dirty.add(registry.getDirtySlurry());
 			clean.add(registry.getCleanSlurry());
 		}

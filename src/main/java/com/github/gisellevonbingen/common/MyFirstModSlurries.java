@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
-import com.github.gisellevonbingen.common.ore.OreState;
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialState;
+import com.github.gisellevonbingen.common.material.MaterialType;
 
 import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.chemical.slurry.SlurryBuilder;
@@ -18,11 +18,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class MyFirstModSlurries
 {
-	public static final Map<OreType, SlurryRegistryObject<Slurry, Slurry>> SLURRIES = new HashMap<>();
+	public static final Map<MaterialType, SlurryRegistryObject<Slurry, Slurry>> SLURRIES = new HashMap<>();
 
-	public static SlurryRegistryObject<Slurry, Slurry> getSlurryRegistry(OreType oreType)
+	public static SlurryRegistryObject<Slurry, Slurry> getSlurryRegistry(MaterialType materialType)
 	{
-		return SLURRIES.get(oreType);
+		return SLURRIES.get(materialType);
 	}
 
 	public static void register()
@@ -34,33 +34,33 @@ public class MyFirstModSlurries
 	{
 		register.register(FMLJavaModLoadingContext.get().getModEventBus());
 
-		for (OreType oreType : OreType.values())
+		for (MaterialType materialType : MaterialType.values())
 		{
-			SlurryRegistryObject<Slurry, Slurry> registryObject = register.register(oreType.getOreName(), new SlurryBuildOperator(oreType));
-			SLURRIES.put(oreType, registryObject);
+			SlurryRegistryObject<Slurry, Slurry> registryObject = register.register(materialType.getBaseName(), new SlurryBuildOperator(materialType));
+			SLURRIES.put(materialType, registryObject);
 		}
 
 	}
 
 	public static final class SlurryBuildOperator implements UnaryOperator<SlurryBuilder>
 	{
-		private final OreType oreType;
+		private final MaterialType materialType;
 
-		private SlurryBuildOperator(OreType oreType)
+		private SlurryBuildOperator(MaterialType materialType)
 		{
-			this.oreType = oreType;
+			this.materialType = materialType;
 		}
 
 		@Override
 		public SlurryBuilder apply(SlurryBuilder builder)
 		{
-			INamedTag<Item> tag = OreState.ORE.getStateTag(this.oreType);
-			return builder.color(this.oreType.getColor()).ore(tag);
+			INamedTag<Item> tag = MaterialState.ORE.getStateTag(this.materialType);
+			return builder.color(this.materialType.getColor()).ore(tag);
 		}
 
-		public OreType getOreType()
+		public MaterialType getOreType()
 		{
-			return this.oreType;
+			return this.materialType;
 		}
 
 	}

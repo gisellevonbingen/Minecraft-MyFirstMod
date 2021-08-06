@@ -6,8 +6,8 @@ import java.util.function.Consumer;
 
 import com.github.gisellevonbingen.MyFirstMod;
 import com.github.gisellevonbingen.common.MyFirstModSlurries;
-import com.github.gisellevonbingen.common.ore.OreState;
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialState;
+import com.github.gisellevonbingen.common.material.MaterialType;
 import com.github.gisellevonbingen.function.ThreeFunction;
 
 import mekanism.api.chemical.gas.GasStack;
@@ -46,21 +46,21 @@ public class RecipesGenerator extends RecipeProvider
 	@Override
 	protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer)
 	{
-		for (OreType oreType : OreType.values())
+		for (MaterialType materialType : MaterialType.values())
 		{
-			new OreRecipesGenerator(oreType, consumer).build();
+			new OreRecipesGenerator(materialType, consumer).build();
 		}
 
 	}
 
 	public class OreRecipesGenerator
 	{
-		private OreType oreType;
+		private MaterialType materialType;
 		private Consumer<IFinishedRecipe> consumer;
 
-		public OreRecipesGenerator(OreType oreType, Consumer<IFinishedRecipe> consumer)
+		public OreRecipesGenerator(MaterialType materialType, Consumer<IFinishedRecipe> consumer)
 		{
-			this.oreType = oreType;
+			this.materialType = materialType;
 			this.consumer = consumer;
 		}
 
@@ -71,25 +71,25 @@ public class RecipesGenerator extends RecipeProvider
 			GasStackIngredient sulfuricAcid = GasStackIngredient.from(new GasStack(MekanismGases.SULFURIC_ACID.get(), 1));
 			FluidStackIngredient water = FluidStackIngredient.from(new FluidStack(Fluids.WATER, 5));
 
-			SlurryRegistryObject<Slurry, Slurry> slurryRegistry = MyFirstModSlurries.getSlurryRegistry(this.oreType);
+			SlurryRegistryObject<Slurry, Slurry> slurryRegistry = MyFirstModSlurries.getSlurryRegistry(this.materialType);
 			Slurry dirtySlurry = slurryRegistry.getDirtySlurry();
 			Slurry cleanSlurry = slurryRegistry.getCleanSlurry();
 
-			this.buildChemicalDissolution(OreState.ORE, dirtySlurry, 1000, sulfuricAcid);
+			this.buildChemicalDissolution(MaterialState.ORE, dirtySlurry, 1000, sulfuricAcid);
 			this.buildChemicalWashing(water, dirtySlurry, cleanSlurry);
-			this.buildChemicalCrystallizing(SlurryStackIngredient.from(new SlurryStack(cleanSlurry, 200)), OreState.CRYSTAL, 1);
+			this.buildChemicalCrystallizing(SlurryStackIngredient.from(new SlurryStack(cleanSlurry, 200)), MaterialState.CRYSTAL, 1);
 
-			this.buildItemStackGasToItemStack(OreState.ORE, OreState.SHARD, 4, hydrogenChloride, ItemStackGasToItemStackRecipeBuilder::injecting);
-			this.buildItemStackGasToItemStack(OreState.ORE, OreState.CLUMP, 3, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
-			this.buildItemToItemStack(OreState.ORE, OreState.DUST, 2, ItemStackToItemStackRecipeBuilder::enriching);
+			this.buildItemStackGasToItemStack(MaterialState.ORE, MaterialState.SHARD, 4, hydrogenChloride, ItemStackGasToItemStackRecipeBuilder::injecting);
+			this.buildItemStackGasToItemStack(MaterialState.ORE, MaterialState.CLUMP, 3, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
+			this.buildItemToItemStack(MaterialState.ORE, MaterialState.DUST, 2, ItemStackToItemStackRecipeBuilder::enriching);
 
-			this.buildItemStackGasToItemStack(OreState.CRYSTAL, OreState.SHARD, 1, hydrogenChloride, ItemStackGasToItemStackRecipeBuilder::injecting);
-			this.buildItemStackGasToItemStack(OreState.SHARD, OreState.CLUMP, 1, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
-			this.buildItemToItemStack(OreState.CLUMP, OreState.DIRTY_DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
-			this.buildItemToItemStack(OreState.DIRTY_DUST, OreState.DUST, 1, ItemStackToItemStackRecipeBuilder::enriching);
-			this.buildCook(OreState.DUST, OreState.INGOT);
+			this.buildItemStackGasToItemStack(MaterialState.CRYSTAL, MaterialState.SHARD, 1, hydrogenChloride, ItemStackGasToItemStackRecipeBuilder::injecting);
+			this.buildItemStackGasToItemStack(MaterialState.SHARD, MaterialState.CLUMP, 1, oxygen, ItemStackGasToItemStackRecipeBuilder::purifying);
+			this.buildItemToItemStack(MaterialState.CLUMP, MaterialState.DIRTY_DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
+			this.buildItemToItemStack(MaterialState.DIRTY_DUST, MaterialState.DUST, 1, ItemStackToItemStackRecipeBuilder::enriching);
+			this.buildCook(MaterialState.DUST, MaterialState.INGOT);
 
-			this.buildItemToItemStack(OreState.INGOT, OreState.DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
+			this.buildItemToItemStack(MaterialState.INGOT, MaterialState.DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
 			this.buildNuggetFromIngot();
 			this.buildIngotFromNugget();
 		}
@@ -104,14 +104,14 @@ public class RecipesGenerator extends RecipeProvider
 			return this.from(name) + "_" + method;
 		}
 
-		public String from(OreState oreState)
+		public String from(MaterialState materialState)
 		{
-			return this.from(oreState.name());
+			return this.from(materialState.getBaseName());
 		}
 
-		public String from(OreState oreState, String method)
+		public String from(MaterialState materialState, String method)
 		{
-			return this.from(oreState.name(), method);
+			return this.from(materialState.getBaseName(), method);
 		}
 
 		public void build(String name, String outputState, BiConsumer<Consumer<IFinishedRecipe>, ResourceLocation> consumer)
@@ -119,16 +119,16 @@ public class RecipesGenerator extends RecipeProvider
 			consumer.accept(this.consumer, this.getRecipeName(outputState, name));
 		}
 
-		public void buildChemicalCrystallizing(SlurryStackIngredient slurryInput, OreState stateOutput, int outputCount)
+		public void buildChemicalCrystallizing(SlurryStackIngredient slurryInput, MaterialState stateOutput, int outputCount)
 		{
-			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
+			ItemStack output = stateOutput.getItemStack(this.materialType, outputCount);
 
 			if (slurryInput == null || output == null || output.isEmpty() == true)
 			{
 				return;
 			}
 
-			this.build(this.from("slurry"), stateOutput.name(), ChemicalCrystallizerRecipeBuilder.crystallizing(slurryInput, output)::build);
+			this.build(this.from("slurry"), stateOutput.getBaseName(), ChemicalCrystallizerRecipeBuilder.crystallizing(slurryInput, output)::build);
 		}
 
 		public void buildChemicalWashing(FluidStackIngredient fluidInput, Slurry slurryInput, Slurry slurryOutput)
@@ -143,7 +143,7 @@ public class RecipesGenerator extends RecipeProvider
 			this.build("clean", "slurry", FluidSlurryToSlurryRecipeBuilder.washing(fluidInput, slurryStackInput, slurryStackOutput)::build);
 		}
 
-		public void buildChemicalDissolution(OreState stateInput, Slurry slurryOutput, int outputAmount, GasStackIngredient gasInput)
+		public void buildChemicalDissolution(MaterialState stateInput, Slurry slurryOutput, int outputAmount, GasStackIngredient gasInput)
 		{
 			ItemStackIngredient itemInput = this.getTaggedItemStackIngredient(stateInput);
 
@@ -156,43 +156,43 @@ public class RecipesGenerator extends RecipeProvider
 			this.build("dirty", "slurry", ChemicalDissolutionRecipeBuilder.dissolution(itemInput, gasInput, slurryStackOutput)::build);
 		}
 
-		public void buildItemStackGasToItemStack(OreState stateInput, OreState stateOutput, int outputCount, GasStackIngredient gasInput, ThreeFunction<ItemStackIngredient, GasStackIngredient, ItemStack, ItemStackGasToItemStackRecipeBuilder> function)
+		public void buildItemStackGasToItemStack(MaterialState stateInput, MaterialState stateOutput, int outputCount, GasStackIngredient gasInput, ThreeFunction<ItemStackIngredient, GasStackIngredient, ItemStack, ItemStackGasToItemStackRecipeBuilder> function)
 		{
 			ItemStackIngredient itemInput = this.getTaggedItemStackIngredient(stateInput);
-			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
+			ItemStack output = stateOutput.getItemStack(this.materialType, outputCount);
 
 			if (itemInput == null || output == null || output.isEmpty() == true || gasInput == null)
 			{
 				return;
 			}
 
-			this.build(this.from(stateInput), stateOutput.name(), function.apply(itemInput, gasInput, output)::build);
+			this.build(this.from(stateInput), stateOutput.getBaseName(), function.apply(itemInput, gasInput, output)::build);
 		}
 
-		public void buildItemToItemStack(OreState stateInput, OreState stateOutput, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function)
+		public void buildItemToItemStack(MaterialState stateInput, MaterialState stateOutput, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function)
 		{
 			ItemStackIngredient itemInput = this.getTaggedItemStackIngredient(stateInput);
-			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
+			ItemStack output = stateOutput.getItemStack(this.materialType, outputCount);
 
 			if (itemInput == null || output == null || output.isEmpty() == true)
 			{
 				return;
 			}
 
-			this.build(this.from(stateInput), stateOutput.name(), function.apply(itemInput, output)::build);
+			this.build(this.from(stateInput), stateOutput.getBaseName(), function.apply(itemInput, output)::build);
 		}
 
-		public void buildCook(OreState stateInput, OreState stateOutput)
+		public void buildCook(MaterialState stateInput, MaterialState stateOutput)
 		{
 			Ingredient itemInput = this.getTaggedIngredient(stateInput);
-			Item output = stateOutput.getItem(this.oreType);
+			Item output = stateOutput.getItem(this.materialType);
 
 			if (itemInput == null || output == null)
 			{
 				return;
 			}
 
-			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
+			ResourceLocation recipeName = this.getRecipeName(stateOutput.getBaseName(), this.from(stateInput));
 			CookingRecipeBuilder builder = new CookingRecipeBuilder(recipeName);
 			builder.setOutput(output).setIngredient(itemInput).setExperience(0.3F);
 
@@ -202,16 +202,16 @@ public class RecipesGenerator extends RecipeProvider
 
 		public void buildIngotFromNugget()
 		{
-			OreState stateInput = OreState.NUGGET;
-			OreState stateOutput = OreState.INGOT;
-			Item itemOutput = stateOutput.getItem(this.oreType);
+			MaterialState stateInput = MaterialState.NUGGET;
+			MaterialState stateOutput = MaterialState.INGOT;
+			Item itemOutput = stateOutput.getItem(this.materialType);
 
 			if (itemOutput == null)
 			{
 				return;
 			}
 
-			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
+			ResourceLocation recipeName = this.getRecipeName(stateOutput.getBaseName(), this.from(stateInput));
 			ShapedRecipeBuilder builder = new ShapedRecipeBuilder(recipeName);
 			builder.setGroup(this.getGroup(stateOutput));
 			builder.setOutput(itemOutput).addPattern("###", "#*#", "###");
@@ -222,16 +222,16 @@ public class RecipesGenerator extends RecipeProvider
 
 		public void buildNuggetFromIngot()
 		{
-			OreState stateInput = OreState.INGOT;
-			OreState stateOutput = OreState.NUGGET;
-			Item itemOutput = stateOutput.getItem(this.oreType);
+			MaterialState stateInput = MaterialState.INGOT;
+			MaterialState stateOutput = MaterialState.NUGGET;
+			Item itemOutput = stateOutput.getItem(this.materialType);
 
 			if (itemOutput == null)
 			{
 				return;
 			}
 
-			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
+			ResourceLocation recipeName = this.getRecipeName(stateOutput.getBaseName(), this.from(stateInput));
 			ShapelessRecipeBuilder builder = new ShapelessRecipeBuilder(recipeName);
 			builder.setGroup(this.getGroup(stateOutput));
 			builder.setOutput(itemOutput, 9).add(this.getExcatIngredient(stateInput));
@@ -240,42 +240,42 @@ public class RecipesGenerator extends RecipeProvider
 
 		public ResourceLocation getRecipeName(String stateOutput, String name)
 		{
-			return new ResourceLocation(MyFirstMod.MODID, ("processing/" + this.oreType.name() + "/" + stateOutput + "/" + name).toLowerCase());
+			return new ResourceLocation(MyFirstMod.MODID, ("processing/" + this.materialType.getBaseName() + "/" + stateOutput + "/" + name).toLowerCase());
 		}
 
-		public Ingredient getExcatIngredient(OreState oreState)
+		public Ingredient getExcatIngredient(MaterialState materialState)
 		{
-			return Ingredient.of(oreState.getItem(this.oreType));
+			return Ingredient.of(materialState.getItem(this.materialType));
 		}
 
-		public Ingredient getTaggedIngredient(OreState oreState)
+		public Ingredient getTaggedIngredient(MaterialState materialState)
 		{
-			return Ingredient.of(this.getTag(oreState));
+			return Ingredient.of(this.getTag(materialState));
 		}
 
-		public ItemStackIngredient getTaggedItemStackIngredient(OreState oreState)
+		public ItemStackIngredient getTaggedItemStackIngredient(MaterialState materialState)
 		{
-			return this.getTaggedItemStackIngredient(oreState, 1);
+			return this.getTaggedItemStackIngredient(materialState, 1);
 		}
 
-		public ItemStackIngredient getTaggedItemStackIngredient(OreState oreState, int amount)
+		public ItemStackIngredient getTaggedItemStackIngredient(MaterialState materialState, int amount)
 		{
-			return ItemStackIngredient.from(this.getTag(oreState), amount);
+			return ItemStackIngredient.from(this.getTag(materialState), amount);
 		}
 
-		public INamedTag<Item> getTag(OreState oreState)
+		public INamedTag<Item> getTag(MaterialState materialState)
 		{
-			return ItemTags.bind(oreState.getStateTagName(this.oreType).toString());
+			return ItemTags.bind(materialState.getStateTagName(this.materialType).toString());
 		}
 
-		public String getGroup(OreState stateOutput)
+		public String getGroup(MaterialState stateOutput)
 		{
-			return stateOutput.getItem(this.oreType).getRegistryName().toString();
+			return stateOutput.getItem(this.materialType).getRegistryName().toString();
 		}
 
-		public OreType getOreType()
+		public MaterialType getOreType()
 		{
-			return this.oreType;
+			return this.materialType;
 		}
 
 		public Consumer<IFinishedRecipe> getConsumer()

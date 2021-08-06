@@ -3,8 +3,8 @@ package com.github.gisellevonbingen.datagen;
 import java.lang.reflect.Field;
 
 import com.github.gisellevonbingen.MyFirstMod;
-import com.github.gisellevonbingen.common.ore.OreState;
-import com.github.gisellevonbingen.common.ore.OreType;
+import com.github.gisellevonbingen.common.material.MaterialState;
+import com.github.gisellevonbingen.common.material.MaterialType;
 import com.github.gisellevonbingen.util.UnsafeHacks;
 
 import mekanism.common.Mekanism;
@@ -67,14 +67,14 @@ public class ItemsModelGenerator extends ItemModelProvider
 
 	private void onRegisterModels()
 	{
-		for (OreType oreType : OreType.values())
+		for (MaterialType materialType : MaterialType.values())
 		{
-			for (OreState oreState : OreState.values())
+			for (MaterialState materialState : MaterialState.values())
 			{
-				if (oreState != OreState.ORE)
+				if (materialState != MaterialState.ORE)
 				{
-					Item item = oreState.getItem(oreType);
-					this.singleTexture(item.getRegistryName().getPath(), this.mcLoc("item/generated"), "layer0", new ResourceLocation(Mekanism.MODID, "item/" + oreState.name().toLowerCase()));
+					Item item = materialState.getItem(materialType);
+					this.singleTexture(item.getRegistryName().getPath(), this.mcLoc("item/generated"), "layer0", new ResourceLocation(Mekanism.MODID, "item/" + materialState.getBaseName()));
 				}
 
 			}
