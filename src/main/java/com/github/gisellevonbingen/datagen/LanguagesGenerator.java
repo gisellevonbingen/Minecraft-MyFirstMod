@@ -42,6 +42,7 @@ public class LanguagesGenerator extends LanguageProvider
 		this.add(MaterialState.CRYSTAL.getStatedDescriptionId(), "%s Crystal");
 		this.add(MaterialState.INGOT.getStatedDescriptionId(), "%s Ingot");
 		this.add(MaterialState.NUGGET.getStatedDescriptionId(), "%s Nugget");
+		this.add(MaterialState.GEM.getStatedDescriptionId(), "%s Gem");
 		this.add(MaterialState.makeDescriptionId("dirty_slurry"), "Dirty %s Slurry");
 		this.add(MaterialState.makeDescriptionId("clearn_slurry"), "Clearn %s Slurry");
 

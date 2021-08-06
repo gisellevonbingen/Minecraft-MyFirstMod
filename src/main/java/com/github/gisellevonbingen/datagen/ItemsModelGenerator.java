@@ -90,9 +90,9 @@ public class ItemsModelGenerator extends ItemModelProvider
 		{
 			return this.child(Items.IRON_INGOT.getRegistryName());
 		}
-		else if (materialState == MaterialState.NUGGET)
+		else if (materialState == MaterialState.GEM)
 		{
-			return this.child(Items.IRON_NUGGET.getRegistryName());
+			return new ResourceLocation(MyFirstMod.MODID, "item/" + materialState.getBaseName());
 		}
 		else
 		{

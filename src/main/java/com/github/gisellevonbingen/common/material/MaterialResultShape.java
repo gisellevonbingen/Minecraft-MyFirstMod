@@ -1,5 +1,6 @@
 package com.github.gisellevonbingen.common.material;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -18,26 +19,48 @@ public enum MaterialResultShape
 
 	private MaterialResultShape(List<MaterialState> processableStates)
 	{
-		this.processableStates = processableStates;
+		this.processableStates = Lists.newArrayList(processableStates);
+		this.ensureStatesValid();
 	}
 
-	public boolean canProcess(MaterialState state)
+	public boolean isExclusiveStates(List<MaterialState> states, Iterable<MaterialState> exclusiveStates)
 	{
-		return this.processableStates.contains(state);
-	}
+		boolean contains = false;
 
-	public boolean canProcess(MaterialState... states)
-	{
-		for (MaterialState state : states)
+		for (MaterialState state : exclusiveStates)
 		{
-			if (this.processableStates.contains(state) == false)
+			if (this.canProcess(state) == true)
 			{
-				return false;
+				if (contains == false)
+				{
+					contains = true;
+				}
+				else
+				{
+					return false;
+				}
+
 			}
 
 		}
 
 		return true;
+	}
+
+	public void ensureStatesValid()
+	{
+		List<MaterialState> exclusiveStates = Arrays.asList(MaterialState.INGOT, MaterialState.GEM);
+
+		if (this.isExclusiveStates(this.processableStates, exclusiveStates) == false)
+		{
+			throw new IllegalArgumentException(this.name() + " require exclusiveStates :" + exclusiveStates);
+		}
+
+	}
+
+	public boolean canProcess(MaterialState state)
+	{
+		return this.processableStates.contains(state);
 	}
 
 	public boolean canProcess(Iterable<MaterialState> states)

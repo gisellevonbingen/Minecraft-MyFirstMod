@@ -7,9 +7,16 @@ import net.minecraft.util.Util;
 
 public enum MaterialType
 {
+	// Tinkers Construct
 	Cobalt(MaterialResultShape.INGOT, "cobalt", "Cobalt", 0x1E66BF),
+
+	// Thermal Foundation
 	Silver(MaterialResultShape.INGOT, "silver", "Silver", 0xD8E4ED),
 	Nickel(MaterialResultShape.INGOT, "nickel", "Nickel", 0xE5E09E),
+	Niter(MaterialResultShape.GEM, "niter", "Niter", 0xC0C0C0),
+	Sulfur(MaterialResultShape.GEM, "sulfur", "Sulfur", 0xE5E09E),
+
+	// Just Test
 	Unknownium(MaterialResultShape.INGOT, "unknownium", "Unknownium", 0xFFFFFF),;
 
 	private final MaterialResultShape resultShape;
