@@ -1,6 +1,5 @@
 package com.github.gisellevonbingen.datagen;
 
-import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
