@@ -21,9 +21,9 @@ import net.minecraft.util.ResourceLocation;
 public class ShapedRecipeBuilder
 {
 	private final ResourceLocation id;
+	private String group;
 	private Item output;
 	private int count;
-	private String group;
 	private final List<String> patterns;
 	private final Map<Character, Ingredient> keys;
 
@@ -33,8 +33,8 @@ public class ShapedRecipeBuilder
 		this.patterns = new ArrayList<>();
 		this.keys = new HashMap<>();
 
-		this.setCount(1);
 		this.setGroup("");
+		this.setCount(1);
 	}
 
 	public ShapedRecipeBuilder(ResourceLocation id, Item output, int count)
@@ -50,6 +50,17 @@ public class ShapedRecipeBuilder
 		return this.id;
 	}
 
+	public String getGroup()
+	{
+		return this.group;
+	}
+
+	public ShapedRecipeBuilder setGroup(String group)
+	{
+		this.group = group;
+		return this;
+	}
+
 	public Item getOutput()
 	{
 		return this.output;
@@ -61,6 +72,13 @@ public class ShapedRecipeBuilder
 		return this;
 	}
 
+	public ShapedRecipeBuilder setOutput(Item output, int count)
+	{
+		this.setOutput(output);
+		this.setCount(count);
+		return this;
+	}
+
 	public int getCount()
 	{
 		return this.count;
@@ -69,17 +87,6 @@ public class ShapedRecipeBuilder
 	public ShapedRecipeBuilder setCount(int count)
 	{
 		this.count = count;
-		return this;
-	}
-
-	public String getGroup()
-	{
-		return this.group;
-	}
-
-	public ShapedRecipeBuilder setGroup(String group)
-	{
-		this.group = group;
 		return this;
 	}
 
@@ -129,9 +136,9 @@ public class ShapedRecipeBuilder
 	public static class Result implements IFinishedRecipe
 	{
 		private final ResourceLocation id;
+		private final String group;
 		private final Item result;
 		private final int count;
-		private final String group;
 		private final List<String> patterns;
 		private final Map<Character, Ingredient> keys;
 		private final IRecipeSerializer<?> type;
@@ -139,9 +146,9 @@ public class ShapedRecipeBuilder
 		public Result(ShapedRecipeBuilder builder)
 		{
 			this.id = builder.id;
+			this.group = builder.group;
 			this.result = builder.output;
 			this.count = builder.count;
-			this.group = builder.group;
 			this.patterns = new ArrayList<>(builder.patterns);
 			this.keys = new HashMap<>(builder.keys);
 			this.type = builder.getType();
@@ -156,21 +163,21 @@ public class ShapedRecipeBuilder
 
 			JsonArray patternJson = new JsonArray();
 
-			for (final String lvt_4_1_ : this.patterns)
+			for (String pattern : this.patterns)
 			{
-				patternJson.add(lvt_4_1_);
+				patternJson.add(pattern);
 			}
 
 			json.add("pattern", patternJson);
 
-			JsonObject lvt_3_1_ = new JsonObject();
+			JsonObject keyJson = new JsonObject();
 
-			for (final Map.Entry<Character, Ingredient> lvt_5_1_ : this.keys.entrySet())
+			for (Map.Entry<Character, Ingredient> entry : this.keys.entrySet())
 			{
-				lvt_3_1_.add(String.valueOf(lvt_5_1_.getKey()), lvt_5_1_.getValue().toJson());
+				keyJson.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
 			}
 
-			json.add("key", lvt_3_1_);
+			json.add("key", keyJson);
 
 			JsonObject resultJson = new JsonObject();
 
@@ -189,6 +196,11 @@ public class ShapedRecipeBuilder
 			return this.id;
 		}
 
+		public String getGroup()
+		{
+			return this.group;
+		}
+
 		public Item getResult()
 		{
 			return this.result;
@@ -197,11 +209,6 @@ public class ShapedRecipeBuilder
 		public int getCount()
 		{
 			return this.count;
-		}
-
-		public String getGroup()
-		{
-			return this.group;
 		}
 
 		public List<String> getPatterns()

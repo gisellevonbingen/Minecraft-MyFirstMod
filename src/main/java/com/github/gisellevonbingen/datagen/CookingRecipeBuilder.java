@@ -12,8 +12,8 @@ import net.minecraft.util.ResourceLocation;
 public class CookingRecipeBuilder
 {
 	private final ResourceLocation id;
-	private Item output;
 	private String group;
+	private Item output;
 	private Ingredient ingredient;
 	private float experience;
 	private int smeltingTime;
@@ -23,7 +23,7 @@ public class CookingRecipeBuilder
 	{
 		this.id = id;
 
-		this.group = "";
+		this.setGroup("");
 		this.setCookingTime(200);
 	}
 
@@ -39,17 +39,6 @@ public class CookingRecipeBuilder
 		return this.id;
 	}
 
-	public Item getOutput()
-	{
-		return this.output;
-	}
-
-	public CookingRecipeBuilder setOutput(Item output)
-	{
-		this.output = output;
-		return this;
-	}
-
 	public String getGroup()
 	{
 		return this.group;
@@ -58,6 +47,17 @@ public class CookingRecipeBuilder
 	public CookingRecipeBuilder setGroup(String group)
 	{
 		this.group = group;
+		return this;
+	}
+
+	public Item getOutput()
+	{
+		return this.output;
+	}
+
+	public CookingRecipeBuilder setOutput(Item output)
+	{
+		this.output = output;
 		return this;
 	}
 
@@ -125,8 +125,8 @@ public class CookingRecipeBuilder
 	public static class Result implements IFinishedRecipe
 	{
 		private final ResourceLocation id;
-		private final Item output;
 		private final String group;
+		private final Item output;
 		private final Ingredient ingredient;
 		private final float experience;
 		private final int cookingTime;
@@ -136,8 +136,8 @@ public class CookingRecipeBuilder
 		public Result(CookingRecipeBuilder builder, String name, int cookingTime, IRecipeSerializer<?> type)
 		{
 			this.id = new ResourceLocation(builder.id.getNamespace(), builder.id.getPath() + "_" + name);
-			this.output = builder.output;
 			this.group = builder.group;
+			this.output = builder.output;
 			this.ingredient = builder.ingredient;
 			this.experience = builder.experience;
 			this.cookingTime = cookingTime;
@@ -164,14 +164,14 @@ public class CookingRecipeBuilder
 			return this.id;
 		}
 
-		public Item getOutput()
-		{
-			return this.output;
-		}
-
 		public String getGroup()
 		{
 			return this.group;
+		}
+
+		public Item getOutput()
+		{
+			return this.output;
 		}
 
 		public Ingredient getIngredient()

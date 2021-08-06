@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.tags.ITagCollection;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
@@ -50,7 +51,19 @@ public enum OreState
 		}
 		else
 		{
-			return (INamedTag<Item>) ItemTags.getAllTags().getTag(this.getStateTagName(oreType));
+			ITagCollection<Item> allTags = ItemTags.getAllTags();
+			ResourceLocation tagName = this.getStateTagName(oreType);
+			INamedTag<Item> tag = (INamedTag<Item>) allTags.getTag(tagName);
+
+			if (tag != null)
+			{
+				return tag;
+			}
+			else
+			{
+				return ItemTags.bind(tagName.toString());
+			}
+
 		}
 
 	}

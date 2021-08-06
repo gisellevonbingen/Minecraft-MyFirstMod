@@ -214,10 +214,10 @@ public class RecipesGenerator extends RecipeProvider
 
 			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
 			ShapedRecipeBuilder builder = new ShapedRecipeBuilder(recipeName);
+			builder.setGroup(this.getGroup(stateOutput));
 			builder.setOutput(itemOutput).addPattern("###", "#*#", "###");
 			builder.addKey('#', this.getTaggedIngredient(stateInput));
 			builder.addKey('*', this.getExcatIngredient(stateInput));
-			builder.setGroup(stateOutput.getItem(this.oreType).getRegistryName().toString());
 			this.consumer.accept(builder.getResult());
 		}
 
@@ -232,12 +232,11 @@ public class RecipesGenerator extends RecipeProvider
 				return;
 			}
 
-			ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
-			ingredients.add(this.getExcatIngredient(stateInput));
-
 			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
-			String group = stateOutput.getItem(this.oreType).getRegistryName().toString();
-			RecipeHelper.acceptAll(this.consumer, RecipeHelper.shapeless(recipeName, itemOutput, 9, ingredients, group));
+			ShapelessRecipeBuilder builder = new ShapelessRecipeBuilder(recipeName);
+			builder.setGroup(this.getGroup(stateOutput));
+			builder.setOutput(itemOutput, 9).add(this.getExcatIngredient(stateInput));
+			this.consumer.accept(builder.getResult());
 		}
 
 		public ResourceLocation getRecipeName(String stateOutput, String name)
@@ -268,6 +267,11 @@ public class RecipesGenerator extends RecipeProvider
 		public INamedTag<Item> getTag(OreState oreState)
 		{
 			return ItemTags.bind(oreState.getStateTagName(this.oreType).toString());
+		}
+
+		public String getGroup(OreState stateOutput)
+		{
+			return stateOutput.getItem(this.oreType).getRegistryName().toString();
 		}
 
 		public OreType getOreType()
