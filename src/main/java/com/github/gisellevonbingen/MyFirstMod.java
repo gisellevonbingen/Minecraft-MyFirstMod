@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.github.gisellevonbingen.common.ModSetup;
 import com.github.gisellevonbingen.common.MyFirstModItems;
-import com.github.gisellevonbingen.common.MyFirstModSlurries;
 import com.github.gisellevonbingen.datagen.DataGenerators;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,15 +21,14 @@ public class MyFirstMod
 
 	public MyFirstMod()
 	{
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientHandler::new);
-        
+		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> ClientHandler::new);
+
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modEventBus.addListener(ModSetup::init);
 		modEventBus.register(this);
 		modEventBus.register(new DataGenerators());
 
 		MyFirstModItems.register();
-		MyFirstModSlurries.register();
 	}
 
 }

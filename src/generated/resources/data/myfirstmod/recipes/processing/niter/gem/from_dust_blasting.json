@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:blasting",
-  "ingredient": {
-    "tag": "forge:dusts/niter"
-  },
-  "result": "myfirstmod:gem_niter",
-  "experience": 0.3,
-  "cookingtime": 100
-}

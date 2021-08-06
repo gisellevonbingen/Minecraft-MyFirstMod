@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "tag": "forge:dusts/cobalt"
-  },
-  "result": "myfirstmod:cobalt_ingot",
-  "experience": 0.3,
-  "cookingtime": 200
-}
