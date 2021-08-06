@@ -10,6 +10,7 @@ public enum MaterialType
 	Cobalt("cobalt", "Cobalt", 0x1E66BF),
 	Silver("silver", "Silver", 0xD8E4ED),
 	Nickel("nickel", "Nickel", 0xA2A699),
+	Nickel("nickel", "Nickel", 0xE5E09E),
 	Unknownium("unknownium", "Unknownium", 0xFFFFFF),;
 
 	private String baseName;
@@ -45,11 +46,6 @@ public enum MaterialType
 
 	public int getColor()
 	{
-		if (this == Nickel)
-		{
-			return 0xE5E09E;
-		}
-		
 		return this.color;
 	}
 
