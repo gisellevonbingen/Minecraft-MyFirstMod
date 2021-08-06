@@ -59,7 +59,7 @@ public enum OreState
 		String stateName = this.name().toLowerCase();
 		String oreName = oreType.getOreName().toLowerCase();
 
-		if (this == INGOT)
+		if (this == INGOT || this == NUGGET)
 		{
 			return oreName + "_" + stateName;
 		}

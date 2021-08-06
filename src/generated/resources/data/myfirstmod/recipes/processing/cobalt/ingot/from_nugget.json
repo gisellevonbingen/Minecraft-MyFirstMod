@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "myfirstmod:cobalt_ingot",
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "key": {
+    "*": {
+      "item": "myfirstmod:cobalt_nugget"
+    },
+    "#": {
+      "tag": "forge:nuggets/cobalt"
+    }
+  },
+  "result": {
+    "item": "myfirstmod:cobalt_ingot"
+  }
+}

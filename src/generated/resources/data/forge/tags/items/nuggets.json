@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "myfirstmod:nugget_cobalt",
-    "myfirstmod:nugget_unknownium"
+    "myfirstmod:cobalt_nugget",
+    "myfirstmod:unknownium_nugget"
   ]
 }

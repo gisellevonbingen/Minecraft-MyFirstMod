@@ -91,7 +91,8 @@ public class RecipesGenerator extends RecipeProvider
 			this.buildCook(OreState.DUST, OreState.INGOT);
 
 			this.buildItemToItemStack(OreState.INGOT, OreState.DUST, 1, ItemStackToItemStackRecipeBuilder::crushing);
-			this.buildIngotToNugget();
+			this.buildNuggetFromIngot();
+			this.buildIngotFromNugget();
 		}
 
 		public String from(String name)
@@ -145,7 +146,7 @@ public class RecipesGenerator extends RecipeProvider
 
 		public void buildChemicalDissolution(OreState stateInput, Slurry slurryOutput, int outputAmount, GasStackIngredient gasInput)
 		{
-			ItemStackIngredient itemInput = this.getItemStackIngredient(stateInput);
+			ItemStackIngredient itemInput = this.getTaggedItemStackIngredient(stateInput);
 
 			if (itemInput == null || slurryOutput == null || gasInput == null)
 			{
@@ -158,7 +159,7 @@ public class RecipesGenerator extends RecipeProvider
 
 		public void buildItemStackGasToItemStack(OreState stateInput, OreState stateOutput, int outputCount, GasStackIngredient gasInput, ThreeFunction<ItemStackIngredient, GasStackIngredient, ItemStack, ItemStackGasToItemStackRecipeBuilder> function)
 		{
-			ItemStackIngredient itemInput = this.getItemStackIngredient(stateInput);
+			ItemStackIngredient itemInput = this.getTaggedItemStackIngredient(stateInput);
 			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
 
 			if (itemInput == null || output == null || output.isEmpty() == true || gasInput == null)
@@ -171,7 +172,7 @@ public class RecipesGenerator extends RecipeProvider
 
 		public void buildItemToItemStack(OreState stateInput, OreState stateOutput, int outputCount, BiFunction<ItemStackIngredient, ItemStack, ItemStackToItemStackRecipeBuilder> function)
 		{
-			ItemStackIngredient itemInput = this.getItemStackIngredient(stateInput);
+			ItemStackIngredient itemInput = this.getTaggedItemStackIngredient(stateInput);
 			ItemStack output = stateOutput.getItemStack(this.oreType, outputCount);
 
 			if (itemInput == null || output == null || output.isEmpty() == true)
@@ -193,19 +194,50 @@ public class RecipesGenerator extends RecipeProvider
 			}
 
 			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
-			RecipeHelper.acceptAll(this.consumer, RecipeHelper.cook(recipeName, itemInput, output, 0.3F));
+			CookingRecipeBuilder builder = new CookingRecipeBuilder(recipeName);
+			builder.setOutput(output).setIngredient(itemInput).setExperience(0.3F);
+
+			this.consumer.accept(builder.getSmelting());
+			this.consumer.accept(builder.getBlasting());
 		}
 
-		public void buildIngotToNugget()
+		public void buildIngotFromNugget()
+		{
+			OreState stateInput = OreState.NUGGET;
+			OreState stateOutput = OreState.INGOT;
+			Item itemOutput = stateOutput.getItem(this.oreType);
+
+			if (itemOutput == null)
+			{
+				return;
+			}
+
+			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
+			ShapedRecipeBuilder builder = new ShapedRecipeBuilder(recipeName);
+			builder.setOutput(itemOutput).addPattern("###", "#*#", "###");
+			builder.addKey('#', this.getTaggedIngredient(stateInput));
+			builder.addKey('*', this.getExcatIngredient(stateInput));
+			builder.setGroup(stateOutput.getItem(this.oreType).getRegistryName().toString());
+			this.consumer.accept(builder.getResult());
+		}
+
+		public void buildNuggetFromIngot()
 		{
 			OreState stateInput = OreState.INGOT;
 			OreState stateOutput = OreState.NUGGET;
 			Item itemOutput = stateOutput.getItem(this.oreType);
+
+			if (itemOutput == null)
+			{
+				return;
+			}
+
 			ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
-			ingredients.add(Ingredient.of(stateInput.getItem(this.oreType)));
+			ingredients.add(this.getExcatIngredient(stateInput));
 
 			ResourceLocation recipeName = this.getRecipeName(stateOutput.name(), this.from(stateInput));
-			RecipeHelper.acceptAll(this.consumer, RecipeHelper.shapeless(recipeName, itemOutput, 9, ingredients));
+			String group = stateOutput.getItem(this.oreType).getRegistryName().toString();
+			RecipeHelper.acceptAll(this.consumer, RecipeHelper.shapeless(recipeName, itemOutput, 9, ingredients, group));
 		}
 
 		public ResourceLocation getRecipeName(String stateOutput, String name)
@@ -213,12 +245,22 @@ public class RecipesGenerator extends RecipeProvider
 			return new ResourceLocation(MyFirstMod.MODID, ("processing/" + this.oreType.name() + "/" + stateOutput + "/" + name).toLowerCase());
 		}
 
-		public ItemStackIngredient getItemStackIngredient(OreState oreState)
+		public Ingredient getExcatIngredient(OreState oreState)
 		{
-			return this.getItemStackIngredient(oreState, 1);
+			return Ingredient.of(oreState.getItem(this.oreType));
 		}
 
-		public ItemStackIngredient getItemStackIngredient(OreState oreState, int amount)
+		public Ingredient getTaggedIngredient(OreState oreState)
+		{
+			return Ingredient.of(this.getTag(oreState));
+		}
+
+		public ItemStackIngredient getTaggedItemStackIngredient(OreState oreState)
+		{
+			return this.getTaggedItemStackIngredient(oreState, 1);
+		}
+
+		public ItemStackIngredient getTaggedItemStackIngredient(OreState oreState, int amount)
 		{
 			return ItemStackIngredient.from(this.getTag(oreState), amount);
 		}
