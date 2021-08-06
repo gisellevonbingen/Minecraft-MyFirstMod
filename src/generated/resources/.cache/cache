@@ -22,6 +22,9 @@ d50b63a4aba0bbab81c5b46916713b917f1741bb data/forge/tags/items/ingots/unknownium
 9ad6e8503ad4fa69b192a84f0482039223aa5d7a data/forge/tags/items/nuggets.json
 a8d30d3a645fb770202d0ff184738902976794e9 data/forge/tags/items/nuggets/cobalt.json
 6065e2113c0020a42658667821f1cbe39f80bbfb data/forge/tags/items/nuggets/unknownium.json
+74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/ores.json
+74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/ores/cobalt.json
+74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/ores/unknownium.json
 21bcceedfcfc71614a129cd5a4b1fa107cc0d941 data/mekanism/tags/items/clumps.json
 6d9dbcc1c2411378003624af9a92c7820c33f438 data/mekanism/tags/items/clumps/cobalt.json
 10d9254185f6e25b7344e2dda1b8d2950c22415a data/mekanism/tags/items/clumps/unknownium.json

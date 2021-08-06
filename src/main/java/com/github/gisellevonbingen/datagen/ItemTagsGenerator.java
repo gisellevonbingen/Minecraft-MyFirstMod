@@ -24,11 +24,14 @@ public class ItemTagsGenerator extends ItemTagsProvider
 		{
 			for (MaterialState materialState : MaterialState.values())
 			{
+				Builder<Item> add = this.tag(materialState.getCategoryTag());
+				Builder<Item> add2 = this.tag(materialState.getStateTag(materialType));
+
 				if (materialState != MaterialState.ORE)
 				{
 					Item item = materialState.getItem(materialType);
-					this.tag(materialState.getCategoryTag()).add(item);
-					this.tag(materialState.getStateTag(materialType)).add(item);
+					add.add(item);
+					add2.add(item);
 				}
 
 			}
