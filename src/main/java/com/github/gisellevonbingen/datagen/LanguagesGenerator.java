@@ -1,9 +1,12 @@
 package com.github.gisellevonbingen.datagen;
 
 import com.github.gisellevonbingen.MyFirstMod;
+import com.github.gisellevonbingen.common.MyFirstModSlurries;
 import com.github.gisellevonbingen.common.material.MaterialState;
 import com.github.gisellevonbingen.common.material.MaterialType;
 
+import mekanism.api.chemical.slurry.Slurry;
+import mekanism.common.registration.impl.SlurryRegistryObject;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
 
@@ -36,6 +39,8 @@ public class LanguagesGenerator extends LanguageProvider
 		this.add(MaterialState.CRYSTAL.getStatedDescriptionId(), "%s Crystal");
 		this.add(MaterialState.INGOT.getStatedDescriptionId(), "%s Ingot");
 		this.add(MaterialState.NUGGET.getStatedDescriptionId(), "%s Nugget");
+		this.add(MaterialState.makeDescriptionId("dirty_slurry"), "Dirty %s Slurry");
+		this.add(MaterialState.makeDescriptionId("clearn_slurry"), "Clearn %s Slurry");
 
 		String materialTypeCommentPrefix = MaterialType.makeDescriptionId("_comment");
 		int materialTypeCommentLine = 0;
@@ -46,6 +51,14 @@ public class LanguagesGenerator extends LanguageProvider
 		for (MaterialType materialType : MaterialType.values())
 		{
 			this.add(materialType.getDescriptionId(), materialType.getDisplayName());
+		}
+
+		for (MaterialType materialType : MaterialType.values())
+		{
+			String displayName = materialType.getDisplayName();
+			SlurryRegistryObject<Slurry, Slurry> slurryRegistry = MyFirstModSlurries.getSlurryRegistry(materialType);
+			this.add(slurryRegistry.getDirtySlurry().getTranslationKey(), "Dirty " + displayName + " Slurry");
+			this.add(slurryRegistry.getCleanSlurry().getTranslationKey(), "Clean " + displayName + " Slurry");
 		}
 
 	}
