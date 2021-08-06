@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "myfirstmod:crystal_cobalt",
+    "myfirstmod:crystal_silver",
+    "myfirstmod:crystal_nickel",
     "myfirstmod:crystal_unknownium"
   ]
 }

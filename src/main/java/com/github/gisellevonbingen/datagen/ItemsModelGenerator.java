@@ -10,6 +10,7 @@ import com.github.gisellevonbingen.util.UnsafeHacks;
 import mekanism.common.Mekanism;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -74,13 +75,36 @@ public class ItemsModelGenerator extends ItemModelProvider
 				if (materialState != MaterialState.ORE)
 				{
 					Item item = materialState.getItem(materialType);
-					this.singleTexture(item.getRegistryName().getPath(), this.mcLoc("item/generated"), "layer0", new ResourceLocation(Mekanism.MODID, "item/" + materialState.getBaseName()));
+
+					this.singleTexture(item.getRegistryName().getPath(), this.mcLoc("item/generated"), "layer0", this.getTexture(materialState));
 				}
 
 			}
 
 		}
 
+	}
+
+	private ResourceLocation getTexture(MaterialState materialState)
+	{
+		if (materialState == MaterialState.INGOT)
+		{
+			return this.child(Items.IRON_INGOT.getRegistryName());
+		}
+		else if (materialState == MaterialState.NUGGET)
+		{
+			return this.child(Items.IRON_NUGGET.getRegistryName());
+		}
+		else
+		{
+			return new ResourceLocation(Mekanism.MODID, "item/" + materialState.getBaseName());
+		}
+
+	}
+
+	private ResourceLocation child(ResourceLocation parent)
+	{
+		return new ResourceLocation(parent.getNamespace(), "item/" + parent.getPath());
 	}
 
 }

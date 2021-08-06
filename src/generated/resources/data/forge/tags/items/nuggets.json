@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "myfirstmod:cobalt_nugget",
+    "myfirstmod:silver_nugget",
+    "myfirstmod:nickel_nugget",
     "myfirstmod:unknownium_nugget"
   ]
 }

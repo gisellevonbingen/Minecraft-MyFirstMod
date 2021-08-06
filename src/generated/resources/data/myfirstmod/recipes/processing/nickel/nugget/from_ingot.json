@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "myfirstmod:nickel_nugget",
+  "ingredients": [
+    {
+      "item": "myfirstmod:nickel_ingot"
+    }
+  ],
+  "result": {
+    "item": "myfirstmod:nickel_nugget",
+    "count": 9
+  }
+}

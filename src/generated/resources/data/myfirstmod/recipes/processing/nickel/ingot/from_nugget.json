@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "myfirstmod:nickel_ingot",
+  "pattern": [
+    "###",
+    "#*#",
+    "###"
+  ],
+  "key": {
+    "*": {
+      "item": "myfirstmod:nickel_nugget"
+    },
+    "#": {
+      "tag": "forge:nuggets/nickel"
+    }
+  },
+  "result": {
+    "item": "myfirstmod:nickel_ingot"
+  }
+}

@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "mekanism:clean_cobalt",
+    "mekanism:clean_silver",
+    "mekanism:clean_nickel",
     "mekanism:clean_unknownium"
   ]
 }
