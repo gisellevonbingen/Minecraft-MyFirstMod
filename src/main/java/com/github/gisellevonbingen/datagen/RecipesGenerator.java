@@ -185,7 +185,7 @@ public class RecipesGenerator extends RecipeProvider
 
 		private void buildCook(OreState stateInput, OreState stateOutput)
 		{
-			Ingredient itemInput = Ingredient.of(this.getTag(stateInput));
+			Ingredient itemInput = this.getTaggedIngredient(stateInput);
 			Item output = stateOutput.getItem(this.oreType);
 
 			if (itemInput == null || output == null)
