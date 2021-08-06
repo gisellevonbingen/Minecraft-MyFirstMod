@@ -182,7 +182,7 @@ public class RecipesGenerator extends RecipeProvider
 			this.build(this.from(stateInput), stateOutput.name(), function.apply(itemInput, output)::build);
 		}
 
-		private void buildCook(OreState stateInput, OreState stateOutput)
+		public void buildCook(OreState stateInput, OreState stateOutput)
 		{
 			Ingredient itemInput = this.getTaggedIngredient(stateInput);
 			Item output = stateOutput.getItem(this.oreType);
