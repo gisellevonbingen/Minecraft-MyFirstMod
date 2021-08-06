@@ -27,8 +27,6 @@ public enum MaterialState
 	INGOT("ingot", Tags.Items.INGOTS),
 	NUGGET("nugget", Tags.Items.NUGGETS),;
 
-	public static final String DescriptionKey_Stated = "statedMaterial";
-
 	private String baseName;
 	private ITag.INamedTag<Item> categoryTag;
 
@@ -110,7 +108,12 @@ public enum MaterialState
 
 	public String getStatedDescriptionId()
 	{
-		return Util.makeDescriptionId(DescriptionKey_Stated, new ResourceLocation(MyFirstMod.MODID, this.baseName));
+		return makeDescriptionId(this.baseName);
+	}
+
+	public static String makeDescriptionId(String baseName)
+	{
+		return Util.makeDescriptionId("statedMaterial", new ResourceLocation(MyFirstMod.MODID, baseName));
 	}
 
 	public String getBaseName()

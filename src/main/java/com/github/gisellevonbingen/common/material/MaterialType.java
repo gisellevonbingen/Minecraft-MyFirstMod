@@ -7,10 +7,8 @@ import net.minecraft.util.Util;
 
 public enum MaterialType
 {
-	Cobalt("cobalt", "Cobalt", 0x2376DD),
+	Cobalt("cobalt", "Cobalt", 0x0753B8),
 	Unknownium("unknownium", "Unknownium", 0xFFFFFF),;
-
-	public static final String DescriptionKey = "materialType";
 
 	private String baseName;
 	private String displayName;
@@ -25,7 +23,12 @@ public enum MaterialType
 
 	public String getDescriptionId()
 	{
-		return Util.makeDescriptionId(DescriptionKey, new ResourceLocation(MyFirstMod.MODID, this.baseName));
+		return makeDescriptionId(this.baseName);
+	}
+
+	public static String makeDescriptionId(String baseName)
+	{
+		return Util.makeDescriptionId("materialType", new ResourceLocation(MyFirstMod.MODID, baseName));
 	}
 
 	public String getBaseName()

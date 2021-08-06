@@ -17,32 +17,35 @@ public class LanguagesGenerator extends LanguageProvider
 	@Override
 	protected void addTranslations()
 	{
-		String statedPrefix = MaterialState.DescriptionKey_Stated + ".";
-		this.add(statedPrefix + "_comment_0", "");
-		this.add(statedPrefix + "_comment_1", "===== ItemStatedMaterial Common Rule =====");
-		this.add(statedPrefix + "_comment_2", "");
-		this.add(statedPrefix + "_comment_3", "%s is material type (e.g. Cobalt, Silver)");
-		this.add(statedPrefix + "_comment_4", "    from materialType.xxxxx");
-		this.add(statedPrefix + "_comment_5", "");
-		this.add(statedPrefix + "_comment_6", "Items can override this rule thought by declare that item's translation");
-		this.add(statedPrefix + "_comment_7", "    e.g.) \"item.cobalt_ingot\" : \"Blue Metal\"");
+		String statedCommentPrefix = MaterialState.makeDescriptionId("_comment");
+		int statedCommentLine = 0;
+		this.add(statedCommentPrefix + (statedCommentLine++), "");
+		this.add(statedCommentPrefix + (statedCommentLine++), "===== ItemStatedMaterial Common Rule =====");
+		this.add(statedCommentPrefix + (statedCommentLine++), "");
+		this.add(statedCommentPrefix + (statedCommentLine++), "%s is material type (e.g. Cobalt, Silver)");
+		this.add(statedCommentPrefix + (statedCommentLine++), "    from materialType.xxxxx");
+		this.add(statedCommentPrefix + (statedCommentLine++), "");
+		this.add(statedCommentPrefix + (statedCommentLine++), "Items can override this rule thought by declare that item's translation");
+		this.add(statedCommentPrefix + (statedCommentLine++), "    e.g.) '" + MaterialState.INGOT.getItem(MaterialType.Cobalt).getDescriptionId() + "' : 'Blue Metal'");
 
-		this.add(statedPrefix + MaterialState.ORE.getBaseName(), "%s Ore");
-		this.add(statedPrefix + MaterialState.DUST.getBaseName(), "%s Dust");
-		this.add(statedPrefix + MaterialState.DIRTY_DUST.getBaseName(), "Dirty %s Dust");
-		this.add(statedPrefix + MaterialState.CLUMP.getBaseName(), "%s Clump");
-		this.add(statedPrefix + MaterialState.SHARD.getBaseName(), "%s Shard");
-		this.add(statedPrefix + MaterialState.CRYSTAL.getBaseName(), "%s Crystal");
-		this.add(statedPrefix + MaterialState.INGOT.getBaseName(), "%s Ingot");
-		this.add(statedPrefix + MaterialState.NUGGET.getBaseName(), "%s Nugget");
+		this.add(MaterialState.ORE.getStatedDescriptionId(), "%s Ore");
+		this.add(MaterialState.DUST.getStatedDescriptionId(), "%s Dust");
+		this.add(MaterialState.DIRTY_DUST.getStatedDescriptionId(), "Dirty %s Dust");
+		this.add(MaterialState.CLUMP.getStatedDescriptionId(), "%s Clump");
+		this.add(MaterialState.SHARD.getStatedDescriptionId(), "%s Shard");
+		this.add(MaterialState.CRYSTAL.getStatedDescriptionId(), "%s Crystal");
+		this.add(MaterialState.INGOT.getStatedDescriptionId(), "%s Ingot");
+		this.add(MaterialState.NUGGET.getStatedDescriptionId(), "%s Nugget");
 
-		this.add("materialType._comment_0", "");
-		this.add("materialType._comment_1", "===== Material Type =====");
-		this.add("materialType._comment_2", "");
+		String materialTypeCommentPrefix = MaterialType.makeDescriptionId("_comment");
+		int materialTypeCommentLine = 0;
+		this.add(materialTypeCommentPrefix + (materialTypeCommentLine++), "");
+		this.add(materialTypeCommentPrefix + (materialTypeCommentLine++), "===== Material Type =====");
+		this.add(materialTypeCommentPrefix + (materialTypeCommentLine++), "");
 
 		for (MaterialType materialType : MaterialType.values())
 		{
-			this.add("materialType." + materialType.name().toLowerCase(), materialType.getDisplayName());
+			this.add(materialType.getDescriptionId(), materialType.getDisplayName());
 		}
 
 	}

@@ -34,8 +34,10 @@ public class ItemStatedMaterial extends Item
 		}
 		else
 		{
-			TranslationTextComponent materialType = new TranslationTextComponent(this.materialType.getDescriptionId());
-			return new TranslationTextComponent(this.materialState.getStatedDescriptionId(), materialType);
+			String statedDescriptionId = this.materialState.getStatedDescriptionId();
+			String materialTypedescriptionId = this.materialType.getDescriptionId();
+			TranslationTextComponent materialType = new TranslationTextComponent(materialTypedescriptionId);
+			return new TranslationTextComponent(statedDescriptionId, materialType);
 		}
 
 	}
