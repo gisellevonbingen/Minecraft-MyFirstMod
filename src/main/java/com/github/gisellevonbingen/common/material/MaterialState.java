@@ -25,6 +25,7 @@ public enum MaterialState
 	SHARD("shard", MekanismTags.Items.SHARDS),
 	CRYSTAL("crystal", MekanismTags.Items.CRYSTALS),
 	INGOT("ingot", Tags.Items.INGOTS),
+	GEM("gem", Tags.Items.GEMS),
 	NUGGET("nugget", Tags.Items.NUGGETS),;
 
 	private String baseName;

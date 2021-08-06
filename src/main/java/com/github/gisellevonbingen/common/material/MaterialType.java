@@ -7,18 +7,19 @@ import net.minecraft.util.Util;
 
 public enum MaterialType
 {
-	Cobalt("cobalt", "Cobalt", 0x1E66BF),
-	Silver("silver", "Silver", 0xD8E4ED),
-	Nickel("nickel", "Nickel", 0xA2A699),
-	Nickel("nickel", "Nickel", 0xE5E09E),
-	Unknownium("unknownium", "Unknownium", 0xFFFFFF),;
+	Cobalt(MaterialResultShape.INGOT, "cobalt", "Cobalt", 0x1E66BF),
+	Silver(MaterialResultShape.INGOT, "silver", "Silver", 0xD8E4ED),
+	Nickel(MaterialResultShape.INGOT, "nickel", "Nickel", 0xE5E09E),
+	Unknownium(MaterialResultShape.INGOT, "unknownium", "Unknownium", 0xFFFFFF),;
 
-	private String baseName;
-	private String displayName;
-	private int color;
+	private final MaterialResultShape resultShape;
+	private final String baseName;
+	private final String displayName;
+	private final int color;
 
-	private MaterialType(String baseName, String displayName, int color)
+	private MaterialType(MaterialResultShape resultShape, String baseName, String displayName, int color)
 	{
+		this.resultShape = resultShape;
 		this.baseName = baseName;
 		this.displayName = displayName;
 		this.color = 0xFF000000 | color;
@@ -32,6 +33,11 @@ public enum MaterialType
 	public static String makeDescriptionId(String baseName)
 	{
 		return Util.makeDescriptionId("materialType", new ResourceLocation(MyFirstMod.MODID, baseName));
+	}
+
+	public MaterialResultShape getResultShape()
+	{
+		return this.resultShape;
 	}
 
 	public String getBaseName()

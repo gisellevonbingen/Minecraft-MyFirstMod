@@ -33,8 +33,13 @@ public class SlurryTagsGenerator extends SlurryTagsProvider
 		for (MaterialType materialType : MaterialType.values())
 		{
 			SlurryRegistryObject<Slurry, Slurry> registry = MyFirstModSlurries.getSlurryRegistry(materialType);
-			dirty.add(registry.getDirtySlurry());
-			clean.add(registry.getCleanSlurry());
+
+			if (registry != null)
+			{
+				dirty.add(registry.getDirtySlurry());
+				clean.add(registry.getCleanSlurry());
+			}
+
 		}
 
 	}

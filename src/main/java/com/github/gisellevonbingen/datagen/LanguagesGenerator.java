@@ -56,13 +56,13 @@ public class LanguagesGenerator extends LanguageProvider
 			this.add(materialType.getDescriptionId(), materialType.getDisplayName());
 		}
 
-		String slurryCommentPrefix =	Util.makeDescriptionId("slurry", new ResourceLocation(Mekanism.MODID, "_comment"));
+		String slurryCommentPrefix = Util.makeDescriptionId("slurry", new ResourceLocation(Mekanism.MODID, "_comment"));
 		int slurryCommentLine = 0;
-		
+
 		this.add(slurryCommentPrefix + (slurryCommentLine++), "");
 		this.add(slurryCommentPrefix + (slurryCommentLine++), "===== Slurries =====");
 		this.add(slurryCommentPrefix + (slurryCommentLine++), "");
-		
+
 		for (MaterialType materialType : MaterialType.values())
 		{
 			String displayName = materialType.getDisplayName();

@@ -75,7 +75,7 @@ public class MyFirstModItems
 		Map<MaterialState, RegistryObject<Item>> map2 = new HashMap<>();
 		PROCESSING_ITEMS.put(materialType, map2);
 
-		for (MaterialState materialState : MaterialState.values())
+		for (MaterialState materialState : materialType.getResultShape().getProcessableStates())
 		{
 			if (materialState != MaterialState.ORE)
 			{

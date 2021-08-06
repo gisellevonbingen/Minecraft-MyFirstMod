@@ -36,8 +36,12 @@ public class MyFirstModSlurries
 
 		for (MaterialType materialType : MaterialType.values())
 		{
-			SlurryRegistryObject<Slurry, Slurry> registryObject = register.register(materialType.getBaseName(), new SlurryBuildOperator(materialType));
-			SLURRIES.put(materialType, registryObject);
+			if (materialType.getResultShape().canProcess(MaterialState.CRYSTAL) == true)
+			{
+				SlurryRegistryObject<Slurry, Slurry> registryObject = register.register(materialType.getBaseName(), new SlurryBuildOperator(materialType));
+				SLURRIES.put(materialType, registryObject);
+			}
+
 		}
 
 	}

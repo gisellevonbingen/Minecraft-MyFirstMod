@@ -22,7 +22,7 @@ public class ItemTagsGenerator extends ItemTagsProvider
 	{
 		for (MaterialType materialType : MaterialType.values())
 		{
-			for (MaterialState materialState : MaterialState.values())
+			for (MaterialState materialState : materialType.getResultShape().getProcessableStates())
 			{
 				Builder<Item> add = this.tag(materialState.getCategoryTag());
 				Builder<Item> add2 = this.tag(materialState.getStateTag(materialType));

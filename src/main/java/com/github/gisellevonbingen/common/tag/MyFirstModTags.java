@@ -33,7 +33,7 @@ public class MyFirstModTags
 			Map<MaterialState, ITag.INamedTag<Item>> map2 = new HashMap<>();
 			PROCESSING_ITEM_TAGS.put(materialType, map2);
 
-			for (MaterialState materialState : MaterialState.values())
+			for (MaterialState materialState : materialType.getResultShape().getProcessableStates())
 			{
 				if (materialState != MaterialState.ORE)
 				{
