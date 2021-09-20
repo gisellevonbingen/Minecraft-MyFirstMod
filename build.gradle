@@ -1,10 +1,12 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -27,6 +29,7 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=myfirstmod.mixin.json"
 
             mods {
                 myfirstmod {
@@ -40,6 +43,7 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=myfirstmod.mixin.json"
 
             mods {
                 myfirstmod {
@@ -53,7 +57,7 @@ minecraft {
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'myfirstmod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'myfirstmod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '-mixin.config=myfirstmod.mixin.json'
 
             mods {
                 myfirstmod {
@@ -90,33 +94,15 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.2'
 	
+	// Mixin
+	annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
+  
 	// JEI
     compileOnly fg.deobf("mezz.jei:jei-${mezz_jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${mezz_jei_version}")
-	
-	// Mekanism
-    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
-    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}")				// core
-    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:additions")	// Mekanism: Additions
-    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:generators")// Mekanism: Generators
-    runtimeOnly fg.deobf("mekanism:Mekanism:${mekanism_version}:tools")		// Mekanism: Tools
-	
-	// RS
-    compileOnly fg.deobf("com.refinedmods:refinedstorage:${refinedmods_rs_version}:api")
-    runtimeOnly fg.deobf("com.refinedmods:refinedstorage:${refinedmods_rs_version}")
-    
-    // TCon
-    compileOnly fg.deobf("com.github.SlimeKnights:Mantle:${slimeknights_mantle_version}")
-    runtimeOnly fg.deobf("com.github.SlimeKnights:Mantle:${slimeknights_mantle_version}")
-    compileOnly fg.deobf("com.github.SlimeKnights:TinkersConstruct:${slimeknights_tcon_version}")
-    runtimeOnly fg.deobf("com.github.SlimeKnights:TinkersConstruct:${slimeknights_tcon_version}")
-    
-    // CoFH
-    compileOnly fg.deobf("com.github.CoFH:CoFHCore:${cofh_core_version}")
-    runtimeOnly fg.deobf("com.github.CoFH:CoFHCore:${cofh_core_version}")
-    compileOnly fg.deobf("com.github.CoFH:ThermalFoundation:${cofh_thermalfoundation_version}")
-    runtimeOnly fg.deobf("com.github.CoFH:ThermalFoundation:${cofh_thermalfoundation_version}")
 }
+
+apply plugin: 'org.spongepowered.mixin'
 
 jar {
     manifest {
@@ -127,7 +113,8 @@ jar {
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
             "Implementation-Vendor" :"gisellevonbingen",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs" : "myfirstmod.mixin.json"
         ])
     }
 }

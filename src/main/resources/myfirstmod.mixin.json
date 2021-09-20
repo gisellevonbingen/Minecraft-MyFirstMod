@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.github.gisellevonbingen.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ArmorTransluction"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "myfirstmod.mixin-refmap.json"
+}
