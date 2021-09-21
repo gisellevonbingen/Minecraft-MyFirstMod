@@ -23,16 +23,4 @@ Just Description
     versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.myfirstmod]]
-    modId="mekanism"
-    mandatory=true
-    versionRange="[10.0.20,)"
-    ordering="AFTER"
-    side="BOTH"
-[[dependencies.myfirstmod]]
-    modId="tconstruct"
-    versionRange="[3.1.1.252,)"
-    mandatory=false
-    ordering="AFTER"
-    side="BOTH"
-    
+	

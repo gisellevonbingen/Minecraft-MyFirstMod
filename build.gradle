@@ -6,7 +6,6 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -95,14 +94,12 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.2'
 	
 	// Mixin
-	annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
+    annotationProcessor 'org.spongepowered:mixin:0.8:processor'
   
 	// JEI
     compileOnly fg.deobf("mezz.jei:jei-${mezz_jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${mezz_jei_version}")
 }
-
-apply plugin: 'org.spongepowered.mixin'
 
 jar {
     manifest {
